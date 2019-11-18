@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.example.demo.sysUser.dao.SysUserMapper">
+
+
+	<resultMap id="SysUser" type="com.example.demo.sysUser.model.SysUser">
+	
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		
+		<result property="account" column="account" jdbcType="VARCHAR"/>
+		<result property="password" column="password" jdbcType="VARCHAR"/>
+		
+		<result property="fullname" column="fullname" jdbcType="VARCHAR"/>
+		<result property="email" column="email" jdbcType="VARCHAR"/>
+		<result property="address" column="address" jdbcType="VARCHAR"/>
+		
+	</resultMap>
+
+	<sql id="columns">
+		id,account,password,fullname,email,address
+	</sql>
+	
+    
+    
+	<insert id="add" parameterType="com.example.demo.sysUser.model.SysUser">
+		INSERT INTO sys_user
+		(id,account,password,
+		fullname,email,address)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+		 #{fullname,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM sys_user  
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.example.demo.sysUser.model.SysUser">
+		UPDATE sys_user  SET
+		account=#{account,jdbcType=VARCHAR} , 
+		password=#{password,jdbcType=VARCHAR} , 
+		fullname=#{fullname,jdbcType=VARCHAR} , 
+		email=#{email,jdbcType=VARCHAR} , 
+		address=#{address,jdbcType=VARCHAR}
+		
+		WHERE
+		id=#{id}
+	</update>
+	
+	
+	<update id="updPwd" parameterType="Map">
+		UPDATE sys_user  SET password=#{password,jdbcType=VARCHAR} WHERE id=#{id}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="SysUser">
+		SELECT <include refid="columns"/>
+		FROM sys_user t
+		WHERE
+		t.id=#{id}
+	</select>
+	
+	
+	<select id="checkUser" parameterType="com.example.demo.sysUser.model.SysUser" resultType="int">
+		SELECT count(id) 
+		FROM sys_user t 
+		WHERE
+			t.account = #{account,jdbcType=VARCHAR}
+		and 
+			t.password = #{password,jdbcType=VARCHAR}
+	</select>
+	
+
+	
+	<select id="getAll" resultMap="SysUser">
+		SELECT <include refid="columns"/>
+		FROM sys_user t   
+	</select>
+	
+	
+</mapper>

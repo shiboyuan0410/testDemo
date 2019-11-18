@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>快递查询页</title>
+
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+	function subInput(){
+		
+		var expName = $("#expName").val();
+		var maxSize = 5;
+		var page = 1;
+		$.ajax({
+			url : "/api/v1/getExpressList",
+			contentType: "application/json",
+			data : JSON.stringify({"expName":expName,"maxSize":maxSize,"page":page}),
+			type : 'POST',
+			success : function(data) {
+				
+				var s = data.showapi_res_body.expressList.length;
+				alert(s);
+				
+			}
+		})
+	}
+</script>
+
+</head>
+<body>
+	快递/物流公司名称:
+	<input id="expName" type="text" name="expName">
+	<input type="button" value="查询" onclick="subInput()">
+	
+</body>
+</html>

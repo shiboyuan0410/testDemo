@@ -1,0 +1,46 @@
+server:
+  port: 8888
+ 
+spring:
+    datasource:
+        name: test
+        url: jdbc:oracle:thin:@192.168.199.232:1521:orcl
+        username: SBYCS
+        password: SBYCS
+
+        driver-class-name: oracle.jdbc.driver.OracleDriver
+        
+           
+#thymelea模板配置
+    thymeleaf: 
+      prefix: classpath:/templates/
+      suffix: .html
+      cache: false #关闭缓存
+      mode: HTML5 #设置模板类型
+      encoding: utf-8  #设置编码
+
+#邮箱
+    mail:
+      host: imap.163.com
+      username: shiboyuan0410@163.com
+      password: s3986483
+      protocol: imap
+      port: 143
+      properties:
+          mail:
+            smtp:
+              auth: true
+              port: 994 #465或者994
+              starttls:
+                enable: true
+                required: true
+            display:
+              sendmail: Javen
+              sendname: Spring Boot Guide Email
+
+      default-encoding: utf-8
+      from: xx@126.com
+
+# mybatis 配置
+mybatis:
+    mapper-locations: classpath*:mybatis/mapper/*.xml
