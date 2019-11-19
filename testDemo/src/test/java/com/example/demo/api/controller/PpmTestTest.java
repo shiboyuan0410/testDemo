@@ -39,8 +39,8 @@ public class PpmTestTest {
 				+ "\"serialnumber\":\"2\",\"charactername\":\"检验特性1\","
 				+ "\"begindate\":\"2019-09-17\","+ "\"finishdate\":\"2019-09-27\",\"productdefect\":\"1\",\"weightingcoefficient\":\"1\",\"isimportant\":\"是\"},"
 				
-				+ "{\"number\":\"3\",\"procedurename\":\"工序名称3\",\"productnumber\":\"null\","
-				+ "\"serialnumber\":\"3\",\"charactername\":\"检验特性3.4\","
+				+ "{\"number\":\"3\",\"procedurename\":\"\",\"productnumber\":\"null\","
+				+ "\"serialnumber\":\"3\",\"charactername\":\"\","
 				+ "\"begindate\":\"2019-10-27\","+ "\"finishdate\":\"2019-11-27\",\"productdefect\":\"null\",\"weightingcoefficient\":\"2\",\"isimportant\":\"是\"}"
 				+ "]";
 		

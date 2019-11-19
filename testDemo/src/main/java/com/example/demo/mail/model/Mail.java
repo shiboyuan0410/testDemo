@@ -14,6 +14,9 @@ import lombok.Data;
 @Data
 public class Mail {
 
+	
+	//邮件号
+	private int msgnum;
 	//发送人
 	private String from;
 	//发送人地址

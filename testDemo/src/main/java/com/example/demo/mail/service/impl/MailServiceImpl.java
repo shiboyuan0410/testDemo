@@ -4,29 +4,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
-import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
-import javax.mail.Session;
+import javax.mail.MessagingException;
 import javax.mail.Store;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeUtility;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.common.utils.BeanUtils;
 import com.example.demo.mail.model.Mail;
 import com.example.demo.mail.model.MailConfig;
 import com.example.demo.mail.service.MailService;
+import com.example.demo.mail.util.MailUtil;
 
 @Service
 public class MailServiceImpl implements MailService {
 
 	@Autowired
 	private MailConfig mailConfig;
+
 
 	@Override
 	public Map<String, Object> getAllMail(int currentPage, int size) {
@@ -35,29 +32,16 @@ public class MailServiceImpl implements MailService {
 
 		List<Mail> mailList =new ArrayList<Mail>();
 
-		// 准备连接服务器的会话信息 
-		Properties props = new Properties(); 
-		props.setProperty("mail.store.protocol", mailConfig.getProtocol()); 
-		props.setProperty("mail.imap.host", mailConfig.getHost()); 
-		props.setProperty("mail.imap.port", mailConfig.getPort()); 
 
-		// 创建Session实例对象 
-		Session session = Session.getInstance(props); 
-
-		// 创建IMAP协议的Store对象 
-		Store store;
 		try {
-			store = session.getStore(mailConfig.getProtocol());
-
-			// 连接邮件服务器 
-			store.connect(mailConfig.getUsername(),mailConfig.getPassword()); 
-
+			
+			Store store = MailUtil.getMailConnect(mailConfig);
+			
 			// 获得收件箱 
 			Folder folder = store.getFolder("INBOX"); 
-
 			// 以读写模式打开收件箱 
 			folder.open(Folder.READ_WRITE); 
-
+			
 			// 获得收件箱的邮件列表 
 			Message[] messages = folder.getMessages(); 
 
@@ -78,16 +62,10 @@ public class MailServiceImpl implements MailService {
 
 			int start = 0;
 			int end = 0;
-			if(currentPage == 1) {
-				start = 1;
-				end = size;
-			}else {
-				start = (currentPage - 1) * size;
-				end = currentPage * size;
-			}
+			start = (currentPage - 1) * size + 1;
+			end = currentPage * size;
 
 			int totalPage = messages.length / size;
-
 
 			/**
 			 * 分页的属性
@@ -100,37 +78,9 @@ public class MailServiceImpl implements MailService {
 			mailMap.put("totalPage", totalPage);
 
 			Message[] msgs = folder.getMessages(start, end);//分页获取
-
 			for (int i = 0; i < msgs.length; i++) {
 
-				Mail mail = new Mail();
-
-				Message mes = msgs[i];
-				//   获取邮箱邮件名字及时间
-				//String from =InternetAddress.toString(a.getFrom());  
-
-				String from = MimeUtility.decodeText(mes.getFrom()[0].toString());
-				InternetAddress ia = new InternetAddress(from);
-
-				//发件人
-				mail.setFrom(ia.getPersonal());
-				//发件人地址
-				mail.setFromAddress(ia.getAddress());
-				//邮件主题
-				mail.setSubject(mes.getSubject());
-
-				//邮件接收时间
-				mail.setReceivedDate(mes.getReceivedDate());
-
-				String flag ="";
-				Flags flags = mes.getFlags();
-				if(BeanUtils.isNotEmpty(flags)) {
-					String string = mes.getFlags().toString();
-					flag = string.substring(1, string.length());
-				}
-
-				mail.setFlag(flag);
-				//System.out.println(mes.getFlags()+":"+flag);
+				Mail mail = MailUtil.mesTansToMail(msgs[msgs.length - 1 - i]);
 				mailList.add(mail);
 			}
 
@@ -152,27 +102,18 @@ public class MailServiceImpl implements MailService {
 	 */
 	@Override
 	public int getMailNum() {
-		// 准备连接服务器的会话信息 
-		Properties props = new Properties(); 
-		props.setProperty("mail.store.protocol", mailConfig.getProtocol()); 
-		props.setProperty("mail.imap.host", mailConfig.getHost()); 
-		props.setProperty("mail.imap.port", mailConfig.getPort()); 
 
-		// 创建Session实例对象 
-		Session session = Session.getInstance(props); 
 
-		// 创建IMAP协议的Store对象 
 		Store store;
 		int total = 0;
 		try {
-			store = session.getStore(mailConfig.getProtocol());
-			// 连接邮件服务器 
-			store.connect(mailConfig.getUsername(),mailConfig.getPassword()); 
+			store = MailUtil.getMailConnect(mailConfig);
 			// 获得收件箱 
 			Folder folder = store.getFolder("INBOX"); 
 			// 以读写模式打开收件箱 
 			folder.open(Folder.READ_WRITE); 
-			total = folder.getMessageCount();
+			//获取未读邮件数量
+			total = folder.getUnreadMessageCount();
 
 			// 关闭资源 
 			folder.close(false); 
@@ -182,5 +123,38 @@ public class MailServiceImpl implements MailService {
 		} 
 		return total;
 	}
+
+
+
+	/**
+	 * 获取邮件详情
+	 * @throws MessagingException 
+	 */
+	@Override
+	public Mail getMailDetail(int msgnum){
+		Mail mail = new Mail();
+
+
+		try {
+			Store store = MailUtil.getMailConnect(mailConfig);
+			// 获得收件箱 
+			Folder folder = store.getFolder("INBOX"); 
+			// 以读写模式打开收件箱 
+			folder.open(Folder.READ_WRITE);
+
+			//message 转 mail
+			Message mes = folder.getMessage(msgnum);
+			mail = MailUtil.mesTansToMail(mes);
+
+			// 关闭资源 
+			folder.close(false); 
+			store.close(); 
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return mail;
+	}
+
+
 
 }

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.common.utils.BeanUtils;
+import com.example.demo.mail.model.Mail;
 import com.example.demo.mail.service.MailService;
 
 @Controller
@@ -22,10 +24,12 @@ public class MailController {
 	 * @return
 	 */
 	@RequestMapping("/mailbox")
-	public String mailbox(Model model) {
-		
-		int page = 1;
-		int size = 5;
+	public String mailbox(Model model,Integer page) {
+		int size;
+		if(BeanUtils.isEmpty(page)) {
+			page = 1;
+		}
+		size = 5;
 		
 		Map<String, Object> mailMap = mailService.getAllMail(page,size);
 		model.addAllAttributes(mailMap);
@@ -38,8 +42,10 @@ public class MailController {
 	 * @return
 	 */
 	@RequestMapping("/detail")
-	public String detail() {
+	public String detail(Model model,Integer msgnum) {
 		
+		Mail mail = mailService.getMailDetail(msgnum);
+		model.addAttribute("mail", mail);
 		return "mail/mail_detail";
 	}
 }

@@ -28,7 +28,7 @@
 
     <!-- iCheck -->
     <script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
             $('.i-checks').iCheck({
                 checkboxClass: 'icheckbox_square-green',
@@ -45,7 +45,18 @@
             });
             
             
+            $('.btn.btn-white.btn-sm').bind("onclick",function(){
+            	alert(1);
+            });
+            
         });
+        
+        //选中页码进行跳转
+        function selectPage(pageNum){
+        	//alert(pageNum);
+        	window.location.href = "/mail/mailbox?page="+pageNum;
+        }
+        
     </script>
 
 </head>
@@ -129,9 +140,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control input-sm" name="search" placeholder="搜索邮件标题，正文等">
                             <div class="input-group-btn">
-                                <button type="submit" class="btn btn-sm btn-primary">
-                                    搜索
-                                </button>
+                                <button type="submit" class="btn btn-sm btn-primary">搜索</button>
                             </div>
                         </div>
                     </form>
@@ -141,7 +150,7 @@
                             <button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button>
                             
                            	<!-- 提示 只提示3页 --> 
-                           	<button th:each="i:${#numbers.sequence(1,totalPage)}" class="btn btn-white btn-sm " th:classappend="${i == currentPage ?'active':''}"  th:text="${i}"></button>
+                           	<button th:onclick="'javascript:selectPage('+${i}+')'" th:each="i:${#numbers.sequence(1,totalPage)}" class="btn btn-white btn-sm " th:classappend="${i == currentPage ?'active':''}"  th:text="${i}"></button>
                            	
                             <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>
                         </div>
@@ -161,9 +170,9 @@
                                 <td class="check-mail">
                                     <input type="checkbox" class="i-checks">
                                 </td>
-                                <td class="mail-ontact"><a href="mail_detail.html">支付宝</a>
+                                <td class="mail-ontact"><a th:href="@{/mail/detail}">支付宝</a>
                                 </td>
-                                <td class="mail-subject"><a href="mail_detail.html">支付宝提醒</a>
+                                <td class="mail-subject"><a th:href="@{/mail/detail}">支付宝提醒</a>
                                 </td>
                                 <td class=""><i class="fa fa-paperclip"></i>
                                 </td>
@@ -173,9 +182,9 @@
                                 <td class="check-mail">
                                     <input type="checkbox" class="i-checks">
                                 </td>
-                                <td class="mail-ontact"><a href="mail_detail.html">Amaze UI</a>
+                                <td class="mail-ontact"><a th:href="@{/mail/detail}">Amaze UI</a>
                                 </td>
-                                <td class="mail-subject"><a href="mail_detail.html">Amaze UI Beta2 发布</a>
+                                <td class="mail-subject"><a th:href="@{/mail/detail}">Amaze UI Beta2 发布</a>
                                 </td>
                                 <td class=""></td>
                                 <td class="text-right mail-date">上午10:57</td>
