@@ -85,7 +85,6 @@
 		    <artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 		
-		
 		<!-- 分页 -->
 		<dependency>
 			<groupId>com.github.pagehelper</groupId>

@@ -14,6 +14,7 @@ import javax.mail.internet.MimeUtility;
 import com.example.demo.common.utils.BeanUtils;
 import com.example.demo.mail.model.Mail;
 import com.example.demo.mail.model.MailConfig;
+import com.sun.mail.imap.SortTerm;
 
 public class MailUtil {
 
@@ -33,7 +34,7 @@ public class MailUtil {
 
 		// 创建Session实例对象 
 		Session session = Session.getInstance(props); 
-
+		
 		// 创建IMAP协议的Store对象 
 		Store store ;
 		store = session.getStore(mailConfig.getProtocol());
@@ -77,7 +78,7 @@ public class MailUtil {
 		String flag ="";
 		Flags flags = mes.getFlags();
 		int messageNumber = mes.getMessageNumber();
-		System.out.println(messageNumber);
+		//System.out.println(messageNumber);
 		if(BeanUtils.isNotEmpty(flags)) {
 			String string = mes.getFlags().toString();
 			if(string.length()>0) {

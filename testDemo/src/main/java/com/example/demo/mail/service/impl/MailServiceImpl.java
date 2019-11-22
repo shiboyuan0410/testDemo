@@ -34,38 +34,29 @@ public class MailServiceImpl implements MailService {
 
 
 		try {
-			
+
 			Store store = MailUtil.getMailConnect(mailConfig);
-			
+
 			// 获得收件箱 
 			Folder folder = store.getFolder("INBOX"); 
 			// 以读写模式打开收件箱 
 			folder.open(Folder.READ_WRITE); 
 			
-			// 获得收件箱的邮件列表 
-			Message[] messages = folder.getMessages(); 
-
-			// 打印不同状态的邮件数量 
-			//System.out.println("收件箱中共" + messages.length + "封邮件!"); 
-
 			//总邮件数量
-			mailMap.put("inboxNum", messages.length);
+			mailMap.put("inboxNum", folder.getMessageCount());
 			//未读邮件数量
 			mailMap.put("unreadNum", folder.getUnreadMessageCount());
 			//已删除邮件数量
 			mailMap.put("deletedNum", folder.getDeletedMessageCount());
-
-			//int total = folder.getMessageCount();
-			//System.out.println("-----------------您的邮箱共有邮件：" + total + " 封--------------");
-			// 得到收件箱文件夹信息，获取邮件列表
-			//Message[] msgs = folder.getMessages();
 
 			int start = 0;
 			int end = 0;
 			start = (currentPage - 1) * size + 1;
 			end = currentPage * size;
 
-			int totalPage = messages.length / size;
+			double a = folder.getMessageCount();
+			double b = size;
+			double totalPage = Math.ceil(a / b);
 
 			/**
 			 * 分页的属性
@@ -77,7 +68,14 @@ public class MailServiceImpl implements MailService {
 			//总页数
 			mailMap.put("totalPage", totalPage);
 
-			Message[] msgs = folder.getMessages(start, end);//分页获取
+			//判断是否有值
+			if(end >= folder.getMessageCount()) {
+				end = folder.getMessageCount();
+			}
+
+			System.out.println("start:"+start+",end:"+end);
+
+			Message[] msgs = folder.getMessages(folder.getMessageCount() - end + 1,folder.getMessageCount() - start + 1);//分页获取
 			for (int i = 0; i < msgs.length; i++) {
 
 				Mail mail = MailUtil.mesTansToMail(msgs[msgs.length - 1 - i]);
