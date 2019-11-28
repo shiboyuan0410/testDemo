@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.common.utils.BeanUtils;
@@ -41,8 +42,8 @@ public class MailController {
 	 * 邮件详情
 	 * @return
 	 */
-	@RequestMapping("/detail")
-	public String detail(Model model,Integer msgnum) {
+	@RequestMapping("/detail/{msgnum}")
+	public String detail(Model model,@PathVariable(value = "msgnum") Integer msgnum) {
 		
 		Mail mail = mailService.getMailDetail(msgnum);
 		model.addAttribute("mail", mail);

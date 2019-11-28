@@ -32,6 +32,16 @@ public class Mail {
 	private Date sentDate;
 	//接收时间
 	private Date receivedDate;
+	//内容
+	private String content;
+	
+	//是否包含附件
+	private Boolean isAttachment;
+	//附件ids
+	private String[] attachmentIds;
+	
+	
+	
 	//邮件标记
 	/**
 	* Flag 类型列举如下

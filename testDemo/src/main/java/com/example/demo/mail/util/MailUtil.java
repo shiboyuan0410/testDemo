@@ -1,20 +1,31 @@
 package com.example.demo.mail.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
+import javax.mail.BodyPart;
 import javax.mail.Flags;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
 import com.example.demo.common.utils.BeanUtils;
+import com.example.demo.common.utils.UniqueIdUtils;
 import com.example.demo.mail.model.Mail;
 import com.example.demo.mail.model.MailConfig;
-import com.sun.mail.imap.SortTerm;
 
 public class MailUtil {
 
@@ -34,7 +45,7 @@ public class MailUtil {
 
 		// 创建Session实例对象 
 		Session session = Session.getInstance(props); 
-		
+
 		// 创建IMAP协议的Store对象 
 		Store store ;
 		store = session.getStore(mailConfig.getProtocol());
@@ -49,10 +60,9 @@ public class MailUtil {
 
 	/**
 	 * 邮件转换
-	 * @throws MessagingException 
-	 * @throws UnsupportedEncodingException 
+	 * @throws Exception 
 	 */
-	public static Mail mesTansToMail(Message mes) throws MessagingException, UnsupportedEncodingException {
+	public static Mail mesTansToMail(Message mes) throws Exception {
 		Mail mail = new Mail();
 
 		//   获取邮箱邮件名字及时间
@@ -86,10 +96,201 @@ public class MailUtil {
 			}
 		}
 
+		//是否包含附件
+		boolean isContainerAttachment = isContainAttachment((Part) mes);  
+
+		if (isContainerAttachment) {  
+			Long id = UniqueIdUtils.getId();
+			saveAttachment((Part) mes, "D:\\TEST\\"); //保存附件  
+			mail.setIsAttachment(true);
+		} else {
+			mail.setIsAttachment(false);
+		}
+
+
+
+		//文件内容
+		StringBuffer bodyText = new StringBuffer();// 存放邮件内容
+		String contentType = mes.getContentType();
+		if (contentType.startsWith("text/plain")) {
+			getMailContent((Part) mes,bodyText,true);
+		} else {
+			getMailContent((Part) mes,bodyText,false);
+		}
+
+		//对于图片cid的替换
+		String replaceLocalPathByImgCid = replaceLocalPathByImgCid(bodyText.toString(),mes.getSubject());
+		
+		//System.out.println(bodyText);
+		mail.setContent(replaceLocalPathByImgCid);
+		
+
 		mail.setFlag(flag);
 
 		return mail; 
 
+	}
+
+	/**
+	 * 解析邮件，把得到的邮件内容保存到一个StringBuffer对象中，解析邮件 主要是根据MimeType类型的不同执行不同的操作，一步一步的解析
+	 * @param bodytext 
+	 */
+	public static void getMailContent(Part part, StringBuffer bodyText,boolean plainFlag) throws Exception {
+		//如果是文本类型的附件，通过getContent方法可以取到文本内容，但这不是我们需要的结果，所以在这里要做判断  
+		boolean isContainTextAttach = part.getContentType().indexOf("name") > 0;  
+		if (part.isMimeType("text/html") && !isContainTextAttach && plainFlag == false) {  
+			bodyText.append(MimeUtility.decodeText(part.getContent().toString()));  
+		} else if(part.isMimeType("text/plain") && !isContainTextAttach && plainFlag){
+			bodyText.append(part.getContent().toString());  
+			plainFlag = false;
+		} else if (part.isMimeType("message/rfc822")) {   
+			getMailContent((Part)part.getContent(),bodyText,plainFlag);  
+		} else if (part.isMimeType("multipart/*")) {  
+			Multipart multipart = (Multipart) part.getContent();  
+			int partCount = multipart.getCount();  
+			for (int i = 0; i < partCount; i++) {  
+				BodyPart bodyPart = multipart.getBodyPart(i);  
+				getMailContent(bodyPart,bodyText,plainFlag);  
+			}  
+		}  
+
+	}
+
+	/** 
+	 * 判断邮件中是否包含附件 
+	 * @param msg 邮件内容 
+	 * @return 邮件中存在附件返回true，不存在返回false 
+	 * @throws MessagingException 
+	 * @throws IOException 
+	 */  
+	public static boolean isContainAttachment(Part part) throws MessagingException, IOException {  
+		boolean flag = false;  
+		if (part.isMimeType("multipart/*")) {  
+			MimeMultipart multipart = (MimeMultipart) part.getContent();  
+			int partCount = multipart.getCount();  
+			for (int i = 0; i < partCount; i++) {  
+				BodyPart bodyPart = multipart.getBodyPart(i);  
+				String disp = bodyPart.getDisposition();  
+				if (disp != null && (disp.equalsIgnoreCase(Part.ATTACHMENT) || disp.equalsIgnoreCase(Part.INLINE))) {  
+					flag = true;  
+				} else if (bodyPart.isMimeType("multipart/*")) {  
+					flag = isContainAttachment(bodyPart);  
+				} else {  
+					String contentType = bodyPart.getContentType();  
+					if (contentType.indexOf("application") != -1) {  
+						flag = true;  
+					}    
+					if (contentType.indexOf("name") != -1) {  
+						flag = true;  
+					}   
+				}  
+
+				if (flag) break;  
+			}  
+		} else if (part.isMimeType("message/rfc822")) {  
+			flag = isContainAttachment((Part)part.getContent());  
+		}  
+		return flag;  
+	}  
+
+
+	/**  
+	 * 保存附件  
+	 * @param part 邮件中多个组合体中的其中一个组合体  
+	 * @param destDir  附件保存目录  
+	 * @throws UnsupportedEncodingException  
+	 * @throws MessagingException  
+	 * @throws FileNotFoundException  
+	 * @throws IOException  
+	 */  
+	public static  void saveAttachment(Part part, String destDir) throws UnsupportedEncodingException, MessagingException,  
+	FileNotFoundException, IOException {  
+		if (part.isMimeType("multipart/*")) {  
+			Multipart multipart = (Multipart) part.getContent();    //复杂体邮件  
+			//复杂体邮件包含多个邮件体  
+			int partCount = multipart.getCount();  
+			for (int i = 0; i < partCount; i++) {  
+				//获得复杂体邮件中其中一个邮件体  
+				BodyPart bodyPart = multipart.getBodyPart(i);  
+				//某一个邮件体也有可能是由多个邮件体组成的复杂体  
+				String disp = bodyPart.getDisposition();  
+				if (disp != null && (disp.equalsIgnoreCase(Part.ATTACHMENT) || disp.equalsIgnoreCase(Part.INLINE))) {  
+					InputStream is = bodyPart.getInputStream();  
+					saveFile(is, destDir, decodeText(bodyPart.getFileName()));  
+				} else if (bodyPart.isMimeType("multipart/*")) {  
+					saveAttachment(bodyPart,destDir);  
+				} else {  
+					String contentType = bodyPart.getContentType();  
+					if (contentType.indexOf("name") != -1 || contentType.indexOf("application") != -1) {  
+						saveFile(bodyPart.getInputStream(), destDir, decodeText(bodyPart.getFileName()));  
+					}  
+				}  
+			}  
+		} else if (part.isMimeType("message/rfc822")) {  
+			saveAttachment((Part) part.getContent(),destDir);  
+		}  
+	}  
+
+	/**  
+	 * 读取输入流中的数据保存至指定目录  
+	 * @param is 输入流  
+	 * @param fileName 文件名  
+	 * @param destDir 文件存储目录  
+	 * @throws FileNotFoundException  
+	 * @throws IOException  
+	 */  
+	private static  void saveFile(InputStream is, String destDir, String fileName)  
+			throws FileNotFoundException, IOException {  
+		
+		if(BeanUtils.isNotEmpty(fileName)) {
+			BufferedInputStream bis = new BufferedInputStream(is);  
+			
+			BufferedOutputStream bos = new BufferedOutputStream(  
+					new FileOutputStream(new File(destDir + fileName)));  
+			int len = -1;  
+			while ((len = bis.read()) != -1) {  
+				bos.write(len);  
+				bos.flush();  
+			}  
+			bos.close();  
+			bis.close();  
+		}
+		
+	}  
+
+	/** 
+	 * 文本解码 
+	 * @param encodeText 解码MimeUtility.encodeText(String text)方法编码后的文本 
+	 * @return 解码后的文本 
+	 * @throws UnsupportedEncodingException 
+	 */  
+	public static  String decodeText(String encodeText) throws UnsupportedEncodingException {  
+		if (encodeText == null || "".equals(encodeText)) {  
+			return "";  
+		} else {  
+			return MimeUtility.decodeText(encodeText);  
+		}  
+	}  
+
+
+	/**
+	 * 图片替换
+	 * @param content
+	 * @param subject 
+	 * @param fileName
+	 * @param filePath
+	 * @return
+	 */
+	public static String replaceLocalPathByImgCid(String content, String subject) {
+		//src="cid:Base64Image1"
+		//【电子发票】你有一张电子发票 [发票号码：27226187]_Base64Image1
+
+		//file://D://TEST//【电子发票】你有一张电子发票 [发票号码：27226187]_Base64Image1
+		
+		boolean contains = content.contains("cid:");
+		System.out.println("contains:"+contains);
+		
+		return content.replace("cid:","file://D://TEST//").toString();
 	}
 
 }

@@ -231,11 +231,11 @@
                                     <input class="flag" type="hidden" th:value="${mail.flag}">
                                 </td>
                                 <td class="mail-ontact">
-	                                <a href="@{/detail}" th:text="${mail.from}"></a> 
+	                                <a th:href="@{/mail/detail/{msgnum}(msgnum=${mail.msgnum})}" th:text="${mail.from}"></a> 
 	                                <span class="label label-danger pull-right">AD</span>
                                 </td>
                                 <td class="mail-subject">
-                                	<a href="mail_detail.html" th:text="${mail.subject}"></a>
+                                	<a th:href="@{/mail/detail/{msgnum}(msgnum=${mail.msgnum})}" th:text="${mail.subject}"></a>
                                 </td>
                                 <td class="">
                                 	<i class="fa fa-paperclip"></i>
