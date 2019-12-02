@@ -1,6 +1,7 @@
 package com.example.demo.mail.model;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.mail.Flags;
 
@@ -37,9 +38,10 @@ public class Mail {
 	
 	//是否包含附件
 	private Boolean isAttachment;
-	//附件ids
-	private String[] attachmentIds;
-	
+	//附件个数
+	private int attachmentNums;
+	//附件
+	private Map<String,String> attachments;
 	
 	
 	//邮件标记

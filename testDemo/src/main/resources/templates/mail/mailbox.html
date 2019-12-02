@@ -238,7 +238,7 @@
                                 	<a th:href="@{/mail/detail/{msgnum}(msgnum=${mail.msgnum})}" th:text="${mail.subject}"></a>
                                 </td>
                                 <td class="">
-                                	<i class="fa fa-paperclip"></i>
+                                	<i class="" th:classappend="${mail.isAttachment ?'fa fa-paperclip':''}"></i>
                                 </td>
                                 <td class="text-right mail-date"  th:text="${#dates.format(mail.receivedDate, 'yyyy-MM-dd')}"></td>
 							 
