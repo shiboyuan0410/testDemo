@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>天气展示</title>
+
+<link rel="shortcut icon" th:href="@{/admin/favicon.ico}">
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/css/font-awesome.css}" rel="stylesheet">
+
+<link th:href="@{/css/animate.css}" rel="stylesheet">
+<link th:href="@{/css/style.css}" rel="stylesheet">
+
+<!-- 全局js -->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+
+
+<!-- layer javascript -->
+<script th:src="@{/js/plugins/layer/layer.min.js}"></script>
+
+<!-- 自定义js -->
+<script th:src="@{/js/content.js}"></script>
+
+
+<script type="text/javascript">
+		
+	$(document).ready(function () {
+		$.ajax({
+				type: "POST",
+				url: "/weather/getWeather/北京",//注意路径
+				success:function(data){
+					console.log(data);
+				},
+				error:function(data){
+					alert(data);
+				}
+			})
+	    
+	});	
+		
+</script>
+
+</head>
+
+<body class="gray-bg">
+
+
+
+</body>
+
+</html>
