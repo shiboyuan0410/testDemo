@@ -19,27 +19,7 @@
     <link th:href="@{/css/animate.css}" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
 
-	 <!-- 全局js -->
-    <script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-
-    <script th:src="@{/js/plugins/jeditable/jquery.jeditable.js}"></script>
-
-    <!-- Data Tables -->
-    <script th:src="@{/js/plugins/dataTables/jquery.dataTables.js}"></script>
-    <script th:src="@{/js/plugins/dataTables/dataTables.bootstrap.js}"></script>
-
-    <!-- 自定义js -->
-    <script th:src="@{/js/content.js}"></script>
 	
-
-
-	<!-- Page-Level Scripts -->
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.dataTables-example').dataTable();
-        });
-    </script>
 
 </head>
 
@@ -107,5 +87,25 @@
 
 
 </body>
+ <!-- 全局js -->
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
 
+    <script th:src="@{/js/plugins/jeditable/jquery.jeditable.js}"></script>
+
+    <!-- Data Tables -->
+    <script th:src="@{/js/plugins/dataTables/jquery.dataTables.js}"></script>
+    <script th:src="@{/js/plugins/dataTables/dataTables.bootstrap.js}"></script>
+
+    <!-- 自定义js -->
+    <script th:src="@{/js/content.js}"></script>
+	
+
+
+	<!-- Page-Level Scripts -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.dataTables-example').dataTable();
+        });
+    </script>
 </html>

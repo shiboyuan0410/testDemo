@@ -1,5 +1,8 @@
 package com.example.demo.api.model;
 
+
+import com.alibaba.fastjson.JSONObject;
+
 import lombok.Data;
 
 /**
@@ -14,35 +17,51 @@ public class WeatherInfo {
 	 * 时间
 	 */
 	private String date;
-
+	
 	/**
-	 * 城市名
+	 * 高温
 	 */
-	private String cityName;
-
+	private String high;
 	/**
-	 * 天气
+	 * 低温
 	 */
-	private String weather;
+	private String low;
 	/**
-	 * 气温
+	 * 风力
 	 */
-	private String temperatureRange;
-
+	private String fengli;
 	/**
-	 * 感冒
-	 */
-	private String ganMao;
-
+	 * 风向
+	 */	
+	private String fengxiang;
+	
 	/**
-	 * 当前温度
+	 * 天气类型
 	 */
-	private String temperature;
+	private String type;
 
-
-	@Override
-	public String toString() {
-		return "WeatherInfo [date=" + date + ", cityName=" + cityName
-				+ ", weather=" + weather + ", temperature=" + temperature+"]";
+	public WeatherInfo() {
+		super();
 	}
+
+	public WeatherInfo(String date, String high, String low, String fengli, String fengxiang, String type) {
+		super();
+		this.date = date;
+		this.high = high;
+		this.low = low;
+		this.fengli = fengli;
+		this.fengxiang = fengxiang;
+		this.type = type;
+	}
+
+	public WeatherInfo(JSONObject jsonObject) {
+		super();
+		this.date = jsonObject.getString("date");
+		this.high = jsonObject.getString("high").substring(2);
+		this.low = jsonObject.getString("low").substring(2);
+		this.fengli = jsonObject.getString("fengli") == null ? jsonObject.getString("fl") : jsonObject.getString("fengli");
+		this.fengxiang = jsonObject.getString("fengxiang") == null ? jsonObject.getString("fx") : jsonObject.getString("fengxiang");
+		this.type = jsonObject.getString("type");
+	}
+	
 }

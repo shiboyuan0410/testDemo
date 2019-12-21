@@ -16,7 +16,7 @@ import com.example.demo.api.model.ExpressInfoReqBody;
 import com.example.demo.api.model.ExpressListReqBody;
 import com.example.demo.api.service.ExpressService;
 
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/express/")
 @RestController
 public class ExpressController {
 

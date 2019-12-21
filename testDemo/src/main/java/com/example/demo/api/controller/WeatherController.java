@@ -27,9 +27,9 @@ public class WeatherController {
 	/**
 	 * 获取天气
 	 */
-	@RequestMapping("/getWeather/{address}")
+	@RequestMapping("/getWeather/{citykey}")
 	@ResponseBody
-	public ReturnResult getWeather(@PathVariable String address) {
-		return weatherService.getWeather(address);
+	public ReturnResult getWeather(@PathVariable String citykey) {
+		return weatherService.getWeather(citykey);
 	}
 }

@@ -15,20 +15,6 @@
     <link th:href="@{/css/animate.css}" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
     
-    <!-- 全局js -->
-    <script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
-    <script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
-    <script th:src="@{/js/plugins/layer/layer.min.js}"></script>
-
-    <!-- 自定义js -->
-    <script th:src="@{/js/hplus.js}"></script>
-    <script type="text/javascript" th:src="@{/js/contabs.js}"></script>
-
-    <!-- 第三方插件 -->
-    <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
-    
     
 </head>
 
@@ -123,6 +109,24 @@
                             </li>
                         </ul>
                     </li>
+                    
+                    
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">表单</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                           
+                            <li>
+                                <a href="#">文件上传 <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li><a class="J_menuItem" th:href="@{/file/showWebupload}">百度WebUploader</a></li>
+                                    <li><a class="J_menuItem" href="form_file_upload.html">DropzoneJS</a></li>
+                                    <li><a class="J_menuItem" href="form_avatar.html">头像裁剪上传</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    
                 </ul>
             </div>
         </nav>
@@ -671,5 +675,17 @@
     
 
 </body>
+ <!-- 全局js -->
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+    <script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+    <script th:src="@{/js/plugins/layer/layer.min.js}"></script>
 
+    <!-- 自定义js -->
+    <script th:src="@{/js/hplus.js}"></script>
+    <script type="text/javascript" th:src="@{/js/contabs.js}"></script>
+
+    <!-- 第三方插件 -->
+    <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
 </html>

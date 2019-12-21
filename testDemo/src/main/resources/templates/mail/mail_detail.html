@@ -17,27 +17,6 @@
     <link th:href="@{/css/style.css}" rel="stylesheet">
 
 
-	<!-- 全局js -->
-    <script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-
-
-
-    <!-- 自定义js -->
-    <script th:src="@{/js/content.js}"></script>
-
-    <!-- iCheck -->
-    <script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
-    <script>
-        $(document).ready(function () {
-            $('.i-checks').iCheck({
-                checkboxClass: 'icheckbox_square-green',
-                radioClass: 'iradio_square-green',
-            });
-        });
-    </script>
-
-
 </head>
 
 <body class="gray-bg">
@@ -197,5 +176,24 @@
     </div>
 
 </body>
+<!-- 全局js -->
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+
+
+    <!-- 自定义js -->
+    <script th:src="@{/js/content.js}"></script>
+
+    <!-- iCheck -->
+    <script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
 
 </html>

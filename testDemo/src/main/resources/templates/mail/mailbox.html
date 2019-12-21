@@ -16,49 +16,6 @@
     <link th:href="@{/css/style.css}" rel="stylesheet">
 
 
-	<!-- 全局js -->
-    <script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-
-
-
-    <!-- 自定义js -->
-    <script th:src="@{/js/content.js}"></script>
-
-
-    <!-- iCheck -->
-    <script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.i-checks').iCheck({
-                checkboxClass: 'icheckbox_square-green',
-                radioClass: 'iradio_square-green',
-            });
-            
-            
-            $('.flag').each(function(i,o){
-            	if($(o).val() == 'Seen'){
-            		$(o).parent().parent().attr("class","read");
-            	}else{
-            		$(o).parent().parent().attr("class","unread");
-            	}
-            });
-            
-            
-            $('.btn.btn-white.btn-sm').bind("onclick",function(){
-            	alert(1);
-            });
-            
-        });
-        
-        //选中页码进行跳转
-        function selectPage(pageNum){
-        	//alert(pageNum);
-        	window.location.href = "/mail/mailbox?page="+pageNum;
-        }
-        
-    </script>
-
 </head>
 
 <body class="gray-bg">
@@ -256,5 +213,46 @@
     </div>
 
 </body>
+<!-- 全局js -->
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
 
+
+
+    <!-- 自定义js -->
+    <script th:src="@{/js/content.js}"></script>
+
+
+    <!-- iCheck -->
+    <script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+            
+            
+            $('.flag').each(function(i,o){
+            	if($(o).val() == 'Seen'){
+            		$(o).parent().parent().attr("class","read");
+            	}else{
+            		$(o).parent().parent().attr("class","unread");
+            	}
+            });
+            
+            
+            $('.btn.btn-white.btn-sm').bind("onclick",function(){
+            	alert(1);
+            });
+            
+        });
+        
+        //选中页码进行跳转
+        function selectPage(pageNum){
+        	//alert(pageNum);
+        	window.location.href = "/mail/mailbox?page="+pageNum;
+        }
+        
+    </script>
 </html>

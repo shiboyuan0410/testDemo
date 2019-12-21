@@ -64,16 +64,17 @@ jQuery(function() {
     uploader = WebUploader.create({
         pick: {
             id: '#filePicker',
-            label: '点击选择图片'
+            label: '点击选择文件'
         },
         dnd: '#uploader .queueList',
         paste: document.body,
 
-        accept: {
-            title: 'Images',
-            extensions: 'gif,jpg,jpeg,bmp,png',
-            mimeTypes: 'image/*'
-        },
+        // 指定接受哪些类型的文件
+       /* accept: {
+            title: 'files',
+            extensions: '*',
+            mimeTypes: 'application/*'
+        },*/
 
         // swf文件路径
         swf: BASE_URL + '/Uploader.swf',
@@ -82,10 +83,17 @@ jQuery(function() {
 
         chunked: true,
         // server: 'http://webuploader.duapp.com/server/fileupload.php',
-        server: 'http://2betop.net/fileupload.php',
-        fileNumLimit: 300,
-        fileSizeLimit: 5 * 1024 * 1024,    // 200 M
-        fileSingleSizeLimit: 1 * 1024 * 1024    // 50 M
+        server: 'http://localhost:8888/file/uploadFile',// 文件接收服务端
+        fileVal : 'files' ,//[默认值：'file'] 设置文件上传域的name。
+        method : 'POST', //[默认值：'POST'] 文件上传方式，POST或者GET
+        
+        
+        fileNumLimit: 300,	//文件数
+        
+        fileSizeLimit: 5 * 1024 * 1024,    // 200 M	总大小
+        
+        fileSingleSizeLimit: 1 * 1024 * 1024    // 50 M 单个文件
+        
     });
 
     // 添加“添加文件”的按钮，
@@ -96,21 +104,27 @@ jQuery(function() {
 
     // 当有文件添加进来时执行，负责view的创建
     function addFile( file ) {
+    	
         var $li = $( '<li id="' + file.id + '">' +
                 '<p class="title">' + file.name + '</p>' +
                 '<p class="imgWrap"></p>'+
                 '<p class="progress"><span></span></p>' +
-                '</li>' ),
+                '</li>' );
 
-            $btns = $('<div class="file-panel">' +
+        /* var $btns = $('<div class="file-panel">' +
                 '<span class="cancel">删除</span>' +
                 '<span class="rotateRight">向右旋转</span>' +
-                '<span class="rotateLeft">向左旋转</span></div>').appendTo( $li ),
-            $prgress = $li.find('p.progress span'),
-            $wrap = $li.find( 'p.imgWrap' ),
-            $info = $('<p class="error"></p>'),
+                '<span class="rotateLeft">向左旋转</span></div>').appendTo( $li );*/
+        
+         var $btns = $('<div class="file-panel">' +
+                 '<span class="cancel">删除</span>').appendTo( $li );        
+         
+         
+         var $prgress = $li.find('p.progress span');
+         var $wrap = $li.find( 'p.imgWrap' );
+         var $info = $('<p class="error"></p>');
 
-            showError = function( code ) {
+         var showError = function( code ) {
                 switch( code ) {
                     case 'exceed_size':
                         text = '文件大小超出';

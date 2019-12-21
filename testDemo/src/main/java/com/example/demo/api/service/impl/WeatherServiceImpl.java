@@ -6,32 +6,35 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.api.model.WeatherInfo;
 import com.example.demo.api.service.WeatherService;
 import com.example.demo.common.model.ReturnResult;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @Service
 public class WeatherServiceImpl implements WeatherService {
 
 
 	@Override
-	public ReturnResult getWeather(String address) {
+	public ReturnResult getWeather(String citykey) {
 		ReturnResult returnResult = null;
 		
 		StringBuilder sb=new StringBuilder();
-		WeatherInfo weatherInfo = null;
+		Map<String, Object> weatherInfo = new HashMap<String, Object>();
         try {
-        	address = URLEncoder.encode(address, "UTF-8");
-            String weatherRrl = "http://wthrcdn.etouch.cn/weather_mini?city="+address;
-//            String weatherRrl = "https://free-api.heweather.net/s6/weather/now?location="+cityName+"&key=db86a5196f304e52a4369818c5182e60";
+        	
+            String weatherRrl = "http://wthrcdn.etouch.cn/weather_mini?citykey="+citykey; //北京 101010100
+            //http://wthrcdn.etouch.cn/weather_mini?city=北京
+            //String weatherRrl = "https://free-api.heweather.net/s6/weather/now?location="+cityName+"&key=db86a5196f304e52a4369818c5182e60";
 
             URL url = new URL(weatherRrl);
             URLConnection conn = url.openConnection();
@@ -47,6 +50,7 @@ public class WeatherServiceImpl implements WeatherService {
             }
             reader.close();
             weatherInfo = transToWeather(sb.toString());
+            
             return returnResult.success(weatherInfo);
         } catch (IOException e) {
             e.printStackTrace();
@@ -56,41 +60,46 @@ public class WeatherServiceImpl implements WeatherService {
 	}
 	
 	 /**
-     * 将JSON格式数据进行解析 ，返回一个weather对象
+     * 将JSON格式数据进行解析 ，封装weather对象
      * @param weatherInfoByJson
      * @return
      */
-    public static WeatherInfo transToWeather(String weatherInfoByJson){
-        JSONObject dataOfJson = JSONObject.fromObject(weatherInfoByJson);
-        if(dataOfJson.getInt("status")!=1000) {
+    public static Map<String, Object> transToWeather(String weatherInfoByJson){
+    	
+    	Map<String, Object> mapData = new HashMap<String, Object>();
+    	LinkedList<WeatherInfo> linkedList = new LinkedList<WeatherInfo>();
+    	
+        JSONObject dataOfJson = JSONObject.parseObject(weatherInfoByJson);
+        if(dataOfJson.getIntValue("status")!=1000) {
             return null;
         }
 
-        //创建WeatherInfo对象，提取所需的天气信息
-        WeatherInfo weatherInfo = new WeatherInfo();
-
         //从json数据中提取数据
         String data = dataOfJson.getString("data");
-
-        //System.out.println(data);
-        dataOfJson = JSONObject.fromObject(data);
-        weatherInfo.setCityName(dataOfJson.getString("city"));
-        weatherInfo.setGanMao(dataOfJson.optString("ganmao"));
-        weatherInfo.setTemperature(dataOfJson.optString("wendu")+"℃");
-
-        //获取预测的天气预报信息
+        dataOfJson = JSONObject.parseObject(data);
+        
+        //昨日天气情况
+        JSONObject yesterday = dataOfJson.getJSONObject("yesterday");
+        linkedList.add(new WeatherInfo(yesterday));
+        
+        //当前城市
+        String city = dataOfJson.getString("city");
+        mapData.put("city", city);
+        //预测天气(5天)
         JSONArray forecast = dataOfJson.getJSONArray("forecast");
-        //取得当天的
-        JSONObject result=forecast.getJSONObject(0);
-        weatherInfo.setDate(result.getString("date"));
-
-        String high = result.getString("high").substring(2);
-        String low  = result.getString("low").substring(2);
-
-        weatherInfo.setTemperatureRange(low+"~"+high);
-        weatherInfo.setWeather(result.getString("type"));
-
-        return weatherInfo;
+        for (int i = 0; i < forecast.size(); i++) {
+        	linkedList.add(new WeatherInfo(forecast.getJSONObject(i)));
+		}
+        mapData.put("forecast", linkedList);
+        
+        //ganmao
+        String ganmao = dataOfJson.getString("ganmao");
+        mapData.put("ganmao", ganmao);
+        //当前温度
+        String wendu = dataOfJson.getString("wendu")+"℃";
+        mapData.put("wendu", wendu);
+        
+        return mapData;
     }
 
 }
