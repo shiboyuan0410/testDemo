@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.example.demo.common.model.CommonFile">
+
+
+	<resultMap id="CommonFile" type="com.example.demo.common.model.CommonFile">
+	
+		<id property="fileId" column="FILEID" jdbcType="VARCHAR"/>
+		
+		<result property="fileName" column="FILENAME" jdbcType="VARCHAR"/>
+		<result property="filePath" column="FILEPATH" jdbcType="VARCHAR"/>
+		
+		<result property="ext" column="EXT" jdbcType="VARCHAR"/>
+		<result property="fileBlob" column="FILEBLOB" jdbcType="BLOB"/>
+		
+	</resultMap>
+
+	<sql id="columns">
+		fileId,fileName,filePath,ext,fileBlob
+	</sql>
+	
+    
+	<insert id="add" parameterType="com.example.demo.common.model.CommonFile">
+		INSERT INTO common_file
+		(fileId,fileName,filePath,ext,fileBlob)
+		VALUES
+		(#{fileId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR},
+		 #{ext,jdbcType=VARCHAR},#{fileBlob,jdbcType=BLOB})
+	</insert>
+	
+	<delete id="delFileById" parameterType="java.lang.String">
+		DELETE FROM sys_user  
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.example.demo.common.model.CommonFile">
+		UPDATE common_file  SET
+		fileId=#{fileId,jdbcType=VARCHAR} , 
+		fileName=#{fileName,jdbcType=VARCHAR} , 
+		filePath=#{filePath,jdbcType=VARCHAR} , 
+		ext=#{ext,jdbcType=VARCHAR} , 
+		fileBlob=#{fileBlob,jdbcType=BLOB}
+		
+		WHERE
+		id=#{id}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.String" resultMap="CommonFile">
+		SELECT <include refid="columns"/>
+		FROM common_file t
+		WHERE
+		t.id = #{id}
+	</select>
+	
+	<select id="getAll" resultMap="CommonFile">
+		SELECT <include refid="columns"/>
+		FROM common_file t   
+	</select>
+	
+	
+</mapper>
