@@ -67,6 +67,10 @@ public class MailServiceImpl implements MailService {
 			mailMap.put("size", size);
 			//总页数
 			mailMap.put("totalPage", totalPage);
+			
+			//展示几个页码
+			mailMap.put("maxShowPages", 5);
+			
 
 			//判断是否有值
 			if(end >= folder.getMessageCount()) {

@@ -5492,17 +5492,11 @@ body.rtls.top-navigation .footer.fixed {
 .default-skin:hover {
 	background: #199d82;
 }
-.blue-skin {
-	font-weight: 600;
-	background: url(http://www.zi-han.net/theme/hplus/img/header-profile-skin-1.png) repeat scroll 0 0;
-}
+
 .blue-skin:hover {
 	background: #0d8ddb;
 }
-.yellow-skin {
-	font-weight: 600;
-	background: url(http://www.zi-han.net/theme/hplus/img/header-profile-skin-3.png) repeat scroll 0 100%;
-}
+
 .yellow-skin:hover {
 	background: #ce8735;
 }
@@ -5536,10 +5530,7 @@ body.rtls.top-navigation .footer.fixed {
 .skin-1 .spin-icon {
 	background: #0e9aef !important;
 }
-.skin-1 .nav-header {
-	background: #0e9aef;
-	background: url(http://www.zi-han.net/theme/hplus/img/header-profile-skin-1.png);
-}
+
 .skin-1.mini-navbar .nav-second-level {
 	background: #3e495f;
 }
@@ -5648,10 +5639,7 @@ body.skin-1 {
 body.boxed-layout.skin-3 #wrapper {
 	background: #3e2c42;
 }
-.skin-3 .nav-header {
-	background: #ecba52;
-	background: url(http://www.zi-han.net/theme/hplus/img/header-profile-skin-3.png);
-}
+
 .skin-3.mini-navbar .nav-second-level {
 	background: #3e2c42;
 }

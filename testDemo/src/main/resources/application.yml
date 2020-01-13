@@ -3,13 +3,11 @@ server:
  
 spring:
     datasource:
-        name: test
-        url: jdbc:oracle:thin:@192.168.199.232:1521:orcl
-        username: SBYCS
-        password: SBYCS
-
-        driver-class-name: oracle.jdbc.driver.OracleDriver
-        
+      url: jdbc:oracle:thin:@192.168.199.232:1521:orcl
+      username: SBYCS
+      password: SBYCS
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      
            
 #thymelea模板配置
     thymeleaf: 

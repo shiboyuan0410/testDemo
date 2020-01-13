@@ -103,13 +103,45 @@
                     </form>
                     <h2>收件箱 (<span th:text="${inboxNum}"></span>)</h2>
                     <div class="mail-tools tooltip-demo m-t-md">
+                    
+                    	<!-- 分页--> 
                         <div class="btn-group pull-right">
-                            <button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button>
-                            
-                           	<!-- 提示 只提示3页 --> 
-                           	<button th:onclick="'javascript:selectPage('+${i}+')'" th:each="i:${#numbers.sequence(1,totalPage)}" class="btn btn-white btn-sm " th:classappend="${i == currentPage ?'active':''}"  th:text="${i}"></button>
-                           	
-                            <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>
+                        	<!-- 上一页 -->
+                            <button class="btn btn-white btn-sm" th:onclick="'javascript:prePage('+${currentPage}+')'"><i class="fa fa-arrow-left"></i></button>
+                            <!-- 页码 -->
+                         	<th:block th:if="${currentPage - 2 <= 0 && totalPage > 0}">
+                         		<th:block th:if="${maxShowPages >= totalPage}" th:each="i:${#numbers.sequence(1,totalPage)}">
+	                         		<button th:onclick="'javascript:selectPage('+${i}+')'" 
+			                           	class="btn btn-white btn-sm " 
+			                           	th:classappend="${i == currentPage ?'active':''}"  
+			                           	th:text="${i}"></button>
+			                     </th:block>
+			                     <th:block th:if="${maxShowPages < totalPage}" th:each="i:${#numbers.sequence(1,maxShowPages)}">
+	                         		<button th:onclick="'javascript:selectPage('+${i}+')'" 
+			                           	class="btn btn-white btn-sm " 
+			                           	th:classappend="${i == currentPage ?'active':''}"  
+			                           	th:text="${i}"></button>
+			                     </th:block>
+							</th:block>
+                         	
+                         	
+                         	<th:block th:if="${currentPage - 2 > 0 && currentPage + 2 <= totalPage}" th:each="i:${#numbers.sequence(currentPage - 2,currentPage + 2)}">
+	                         		<button th:onclick="'javascript:selectPage('+${i}+')'" 
+			                           	class="btn btn-white btn-sm " 
+			                           	th:classappend="${i == currentPage ?'active':''}"  
+			                           	th:text="${i}"></button>
+							</th:block>
+                         	
+                         	
+                         	<th:block th:if="${currentPage + 2 > totalPage && currentPage - 2 > 0 }" th:each="i:${#numbers.sequence(totalPage - 4,totalPage)}">
+	                         		<button th:onclick="'javascript:selectPage('+${i}+')'" 
+			                           	class="btn btn-white btn-sm " 
+			                           	th:classappend="${i == currentPage ?'active':''}"  
+			                           	th:text="${i}"></button>
+							</th:block>
+
+                           	<!-- 下一页 -->
+                            <button class="btn btn-white btn-sm" th:onclick="'javascript:nextPage('+${currentPage}+','+${totalPage}+')'"><i class="fa fa-arrow-right"></i></button>
                         </div>
                             
                         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="刷新邮件列表"><i class="fa fa-refresh"></i> 刷新</button>
@@ -247,6 +279,26 @@
             });
             
         });
+      
+      	//上一页
+        function prePage(currentPage){
+        	if(currentPage - 1 == 0){
+        		alert("已经是第一页了!");
+        	}else{
+        		var pageNum = currentPage - 1
+        		window.location.href = "/mail/mailbox?page="+pageNum;
+        	}
+        }
+        
+        //下一页
+        function nextPage(currentPage,totalPage){
+        	if(currentPage == totalPage){
+        		alert("已经是最后一页了!");
+        	}else{
+        		var pageNum = currentPage + 1
+        		window.location.href = "/mail/mailbox?page="+pageNum;
+        	}
+        }
         
         //选中页码进行跳转
         function selectPage(pageNum){
