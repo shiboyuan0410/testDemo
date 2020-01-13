@@ -109,36 +109,30 @@
                         	<!-- 上一页 -->
                             <button class="btn btn-white btn-sm" th:onclick="'javascript:prePage('+${currentPage}+')'"><i class="fa fa-arrow-left"></i></button>
                             <!-- 页码 -->
-                         	<th:block th:if="${currentPage - 2 <= 0 && totalPage > 0}">
-                         		<th:block th:if="${maxShowPages >= totalPage}" th:each="i:${#numbers.sequence(1,totalPage)}">
-	                         		<button th:onclick="'javascript:selectPage('+${i}+')'" 
+                            
+                            <th:block th:if="${totalPage > 0}">
+                            	<th:block th:if="${maxShowPages >= totalPage}" th:each="i:${#numbers.sequence(1,totalPage)}" >
+                            		<button th:onclick="'javascript:selectPage('+${i}+')'" 
 			                           	class="btn btn-white btn-sm " 
 			                           	th:classappend="${i == currentPage ?'active':''}"  
 			                           	th:text="${i}"></button>
-			                     </th:block>
-			                     <th:block th:if="${maxShowPages < totalPage}" th:each="i:${#numbers.sequence(1,maxShowPages)}">
-	                         		<button th:onclick="'javascript:selectPage('+${i}+')'" 
-			                           	class="btn btn-white btn-sm " 
-			                           	th:classappend="${i == currentPage ?'active':''}"  
-			                           	th:text="${i}"></button>
-			                     </th:block>
-							</th:block>
-                         	
-                         	
-                         	<th:block th:if="${currentPage - 2 > 0 && currentPage + 2 <= totalPage}" th:each="i:${#numbers.sequence(currentPage - 2,currentPage + 2)}">
-	                         		<button th:onclick="'javascript:selectPage('+${i}+')'" 
-			                           	class="btn btn-white btn-sm " 
-			                           	th:classappend="${i == currentPage ?'active':''}"  
-			                           	th:text="${i}"></button>
-							</th:block>
-                         	
-                         	
-                         	<th:block th:if="${currentPage + 2 > totalPage && currentPage - 2 > 0 }" th:each="i:${#numbers.sequence(totalPage - 4,totalPage)}">
-	                         		<button th:onclick="'javascript:selectPage('+${i}+')'" 
-			                           	class="btn btn-white btn-sm " 
-			                           	th:classappend="${i == currentPage ?'active':''}"  
-			                           	th:text="${i}"></button>
-							</th:block>
+                            		</th:block>
+                            	<th:block th:if="${maxShowPages < totalPage}">
+                            		<th:block th:if="${currentPage - 2 > 0 && currentPage + 2 <= totalPage}" th:each="i:${#numbers.sequence(currentPage - 2,currentPage + 2)}">
+		                         		<button th:onclick="'javascript:selectPage('+${i}+')'" 
+				                           	class="btn btn-white btn-sm " 
+				                           	th:classappend="${i == currentPage ?'active':''}"  
+				                           	th:text="${i}"></button>
+									</th:block>
+		                         	
+		                         	<th:block th:if="${currentPage + 2 > totalPage && currentPage - 2 > 0 }" th:each="i:${#numbers.sequence(totalPage - 4,totalPage)}">
+		                         		<button th:onclick="'javascript:selectPage('+${i}+')'" 
+				                           	class="btn btn-white btn-sm " 
+				                           	th:classappend="${i == currentPage ?'active':''}"  
+				                           	th:text="${i}"></button>
+									</th:block>
+                            	</th:block>
+                            </th:block>
 
                            	<!-- 下一页 -->
                             <button class="btn btn-white btn-sm" th:onclick="'javascript:nextPage('+${currentPage}+','+${totalPage}+')'"><i class="fa fa-arrow-right"></i></button>
