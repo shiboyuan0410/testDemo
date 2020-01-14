@@ -71,8 +71,12 @@
                             <li><a class="J_menuItem" href="profile.html">个人资料</a>
                             </li>
                             
-                            <li><a class="J_menuItem" href="calendar.html">日历</a>
+                            <li><a class="J_menuItem" th:href="@{/calendar/show}">日历</a>
                             </li>
+                            
+                            <li><a class="J_menuItem" th:href="@{/calendar/show2}">日历2</a>
+                            </li>
+                            
                             <li>
                                 <a href="#">博客 <span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
@@ -364,7 +368,7 @@
 
                         <div class="sidebar-title">
                             <h3> <i class="fa fa-cloud"></i>日历</h3>
-                            <small><i class="fa fa-tim"></i> 你可以查看最近一周的天气情况。</small>
+                            <small><i class="fa fa-tim"></i> 你可以查看最近一周的工作。</small>
                         </div>
 
                         <div>

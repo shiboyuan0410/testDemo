@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.example.demo.protal.calendar.dao.CalendarEventMapper">
+
+
+	<resultMap id="CalendarEvent" type="com.example.demo.protal.calendar.dao.CalendarEventMapper">
+	
+		<id property="id" column="ID" jdbcType="NUMERIC"/>
+		
+		<result property="title" column="TITLE" jdbcType="VARCHAR"/>
+		
+		<result property="allDay" column="ALLDAY" jdbcType="VARCHAR"/>
+		<result property="startDate" column="STARTDATE" jdbcType="TIMESTAMP"/>
+		<result property="endDate" column="ENDDATE" jdbcType="TIMESTAMP"/>
+		
+		<result property="url" column="URL" jdbcType="VARCHAR"/>
+		<result property="className" column="CLASSNAME" jdbcType="VARCHAR"/>
+		<result property="editable" column="EDITABLE" jdbcType="VARCHAR"/>
+		
+		<result property="color" column="COLOR" jdbcType="VARCHAR"/>
+		<result property="backgroundColor" column="BACKGROUNDCOLOR" jdbcType="VARCHAR"/>
+		<result property="borderColor" column="BORDERCOLOR" jdbcType="VARCHAR"/>
+		
+		<result property="textColor" column="TEXTCOLOR" jdbcType="VARCHAR"/>
+		
+	</resultMap>
+
+	<sql id="columns">
+		id,title,allday,startdate,enddate,url,classname,editable,color,backgroundcolor,bordercolor,textcolor
+	</sql>
+	
+    
+    
+	<insert id="add" parameterType="com.example.demo.protal.calendar.dao.CalendarEventMapper">
+		INSERT INTO SYS_CALENDAR_EVENT
+		(id,title,allday,startdate,enddate,url,classname,editable,color,backgroundcolor,bordercolor,textcolor)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{title,jdbcType=VARCHAR}, #{allday,jdbcType=VARCHAR},
+		 #{startdate,jdbcType=TIMESTAMP},#{enddate,jdbcType=TIMESTAMP},#{url,jdbcType=VARCHAR},
+		 #{classname,jdbcType=VARCHAR},#{editable,jdbcType=VARCHAR},#{color,jdbcType=VARCHAR},
+		 #{backgroundcolor,jdbcType=VARCHAR},#{bordercolor,jdbcType=VARCHAR},#{textcolor,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM SYS_CALENDAR_EVENT  
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.example.demo.protal.calendar.dao.CalendarEventMapper">
+		UPDATE SYS_CALENDAR_EVENT  SET
+		
+		title = #{title,jdbcType=VARCHAR},
+		allday = #{allday,jdbcType=VARCHAR},
+		startdate = #{startdate,jdbcType=TIMESTAMP},
+		enddate = #{enddate,jdbcType=TIMESTAMP},
+		url = #{url,jdbcType=VARCHAR},
+		classname = #{classname,jdbcType=VARCHAR},
+		editable = #{editable,jdbcType=VARCHAR},
+		color = #{color,jdbcType=VARCHAR},
+		backgroundcolor = #{backgroundcolor,jdbcType=VARCHAR},
+		bordercolor = #{bordercolor,jdbcType=VARCHAR},
+		textcolor = #{textcolor,jdbcType=VARCHAR}
+		
+		WHERE
+		id=#{id}
+	</update>
+	
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="CalendarEvent">
+		SELECT <include refid="columns"/>
+		FROM SYS_CALENDAR_EVENT t
+		WHERE
+		t.id=#{id}
+	</select>
+	
+	
+	<select id="getAll" resultMap="CalendarEvent">
+		SELECT <include refid="columns"/>
+		FROM SYS_CALENDAR_EVENT t   
+	</select>
+	
+	
+</mapper>

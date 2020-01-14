@@ -3,7 +3,7 @@ package com.example.demo.common.utils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.example.demo.sysUser.model.SysUser;
+import com.example.demo.protal.sysUser.model.SysUser;
 
 public class SessionUtils {
 
