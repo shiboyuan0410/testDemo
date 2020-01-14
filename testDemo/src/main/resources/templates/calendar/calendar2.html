@@ -159,7 +159,14 @@
                 
                 selectable: true,
     			eventLimit: true, // allow "more" link when too many events
-                
+    			views: {
+    		        agenda: {
+    		            eventLimit: 2 // adjust to 6 only for agendaWeek/agendaDay
+    		        }
+    		    },
+    			
+    			
+    			
                 editable: true,//事件是否可编辑
                 droppable: true,//
         		businessHours: true,
@@ -191,25 +198,32 @@
                 	//添加日事件 周事件 月事件
                 	//id title start end
                 	
-		            var y = date.getFullYear();
-		            var m = date.getMonth();
-                	var d = date.getDate();
-		            
-                	var Hours = date.getHours();
-                	var Minutes = date.getMinutes();
-                	var Seconds = date.getSeconds();
-		            
-                	$('#calendar').fullCalendar('addEventSource',
-                			[
-                				{
-                					id : 3,
-                					title: '日事件', 
-                					start: new Date(2020, 0, 14, 11),
-                					end: new Date(2020, 0, 14, 12), 
-                					allDay: false
-                				}
-                			]
-                	) 
+                	var title = prompt('Event Title:');
+                    if (title) {
+                    	var y = date.getFullYear();
+     		            var m = date.getMonth();
+                     	var d = date.getDate();
+     		            
+                     	var Hours = date.getHours();
+                     	var Minutes = date.getMinutes();
+                     	var Seconds = date.getSeconds();
+                    	
+                    	
+                    	$('#calendar').fullCalendar('addEventSource',
+                    			[
+                    				{
+                    					id : 3,
+                    					title: title, 
+                    					start: new Date(y, m, d, Hours),
+                    					end: new Date(y, m, d, Hours+2), 
+                    					allDay: false
+                    				}
+                    			]
+                    	) 
+                    }
+                	
+                	
+                	
         		},
         		eventClick: function(event) {
        		        if (confirm('是否删除任务?')) {
