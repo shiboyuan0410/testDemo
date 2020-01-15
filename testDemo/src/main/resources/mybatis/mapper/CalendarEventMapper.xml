@@ -3,15 +3,15 @@
 <mapper namespace="com.example.demo.protal.calendar.dao.CalendarEventMapper">
 
 
-	<resultMap id="CalendarEvent" type="com.example.demo.protal.calendar.dao.CalendarEventMapper">
+	<resultMap id="CalendarEvent" type="com.example.demo.protal.calendar.model.CalendarEvent">
 	
 		<id property="id" column="ID" jdbcType="NUMERIC"/>
 		
 		<result property="title" column="TITLE" jdbcType="VARCHAR"/>
 		
 		<result property="allDay" column="ALLDAY" jdbcType="VARCHAR"/>
-		<result property="startDate" column="STARTDATE" jdbcType="TIMESTAMP"/>
-		<result property="endDate" column="ENDDATE" jdbcType="TIMESTAMP"/>
+		<result property="start" column="STARTDATE" jdbcType="TIMESTAMP"/>
+		<result property="end" column="ENDDATE" jdbcType="TIMESTAMP"/>
 		
 		<result property="url" column="URL" jdbcType="VARCHAR"/>
 		<result property="className" column="CLASSNAME" jdbcType="VARCHAR"/>
@@ -26,19 +26,18 @@
 	</resultMap>
 
 	<sql id="columns">
-		id,title,allday,startdate,enddate,url,classname,editable,color,backgroundcolor,bordercolor,textcolor
+		id,title,allDay,startDate,endDate,url,className,editable,color,backgroundColor,borderColor,textColor
 	</sql>
 	
     
-    
-	<insert id="add" parameterType="com.example.demo.protal.calendar.dao.CalendarEventMapper">
+	<insert id="add" parameterType="com.example.demo.protal.calendar.model.CalendarEvent">
 		INSERT INTO SYS_CALENDAR_EVENT
-		(id,title,allday,startdate,enddate,url,classname,editable,color,backgroundcolor,bordercolor,textcolor)
+		(id,title,allDay,startDate,endDate,url,className,editable,color,backgroundColor,borderColor,textColor)
 		VALUES
-		(#{id,jdbcType=NUMERIC}, #{title,jdbcType=VARCHAR}, #{allday,jdbcType=VARCHAR},
-		 #{startdate,jdbcType=TIMESTAMP},#{enddate,jdbcType=TIMESTAMP},#{url,jdbcType=VARCHAR},
-		 #{classname,jdbcType=VARCHAR},#{editable,jdbcType=VARCHAR},#{color,jdbcType=VARCHAR},
-		 #{backgroundcolor,jdbcType=VARCHAR},#{bordercolor,jdbcType=VARCHAR},#{textcolor,jdbcType=VARCHAR})
+		(#{id,jdbcType=NUMERIC}, #{title,jdbcType=VARCHAR}, #{allDay,jdbcType=VARCHAR},
+		 #{start,jdbcType=TIMESTAMP},#{end,jdbcType=TIMESTAMP},#{url,jdbcType=VARCHAR},
+		 #{className,jdbcType=VARCHAR},#{editable,jdbcType=VARCHAR},#{color,jdbcType=VARCHAR},
+		 #{backgroundColor,jdbcType=VARCHAR},#{borderColor,jdbcType=VARCHAR},#{textColor,jdbcType=VARCHAR})
 	</insert>
 	
 	<delete id="delById" parameterType="java.lang.Long">
@@ -47,20 +46,20 @@
 		id=#{id}
 	</delete>
 	
-	<update id="update" parameterType="com.example.demo.protal.calendar.dao.CalendarEventMapper">
+	<update id="update" parameterType="com.example.demo.protal.calendar.model.CalendarEvent">
 		UPDATE SYS_CALENDAR_EVENT  SET
 		
 		title = #{title,jdbcType=VARCHAR},
-		allday = #{allday,jdbcType=VARCHAR},
-		startdate = #{startdate,jdbcType=TIMESTAMP},
-		enddate = #{enddate,jdbcType=TIMESTAMP},
+		allDay = #{allDay,jdbcType=VARCHAR},
+		startDate = #{start,jdbcType=TIMESTAMP},
+		endDate = #{end,jdbcType=TIMESTAMP},
 		url = #{url,jdbcType=VARCHAR},
-		classname = #{classname,jdbcType=VARCHAR},
+		className = #{className,jdbcType=VARCHAR},
 		editable = #{editable,jdbcType=VARCHAR},
 		color = #{color,jdbcType=VARCHAR},
-		backgroundcolor = #{backgroundcolor,jdbcType=VARCHAR},
-		bordercolor = #{bordercolor,jdbcType=VARCHAR},
-		textcolor = #{textcolor,jdbcType=VARCHAR}
+		backgroundColor = #{backgroundColor,jdbcType=VARCHAR},
+		borderColor = #{borderColor,jdbcType=VARCHAR},
+		textColor = #{textColor,jdbcType=VARCHAR}
 		
 		WHERE
 		id=#{id}
@@ -75,8 +74,8 @@
 	</select>
 	
 	
-	<select id="getAll" resultMap="CalendarEvent">
-		SELECT <include refid="columns"/>
+	<select id="getAllCalendarEvent" resultMap="CalendarEvent">
+		SELECT  <include refid="columns"/>
 		FROM SYS_CALENDAR_EVENT t   
 	</select>
 	

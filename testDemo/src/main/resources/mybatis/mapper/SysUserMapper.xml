@@ -3,7 +3,7 @@
 <mapper namespace="com.example.demo.protal.sysUser.dao.SysUserMapper">
 
 
-	<resultMap id="SysUser" type="com.example.demo.protal.sysUser.dao.SysUserMapper">
+	<resultMap id="SysUser" type="com.example.demo.protal.sysUser.model.SysUser">
 	
 		<id property="id" column="id" jdbcType="NUMERIC"/>
 		
@@ -22,7 +22,7 @@
 	
     
     
-	<insert id="add" parameterType="com.example.demo.protal.sysUser.dao.SysUserMapper">
+	<insert id="add" parameterType="com.example.demo.protal.sysUser.model.SysUser">
 		INSERT INTO sys_user
 		(id,account,password,
 		fullname,email,address)
@@ -37,7 +37,7 @@
 		id=#{id}
 	</delete>
 	
-	<update id="update" parameterType="com.example.demo.protal.sysUser.dao.SysUserMapper">
+	<update id="update" parameterType="com.example.demo.protal.sysUser.model.SysUser">
 		UPDATE sys_user  SET
 		account=#{account,jdbcType=VARCHAR} , 
 		password=#{password,jdbcType=VARCHAR} , 
@@ -62,7 +62,7 @@
 	</select>
 	
 	
-	<select id="checkUser" parameterType="com.example.demo.protal.sysUser.dao.SysUserMapper" resultType="int">
+	<select id="checkUser" parameterType="com.example.demo.protal.sysUser.model.SysUser" resultType="int">
 		SELECT count(id) 
 		FROM sys_user t 
 		WHERE

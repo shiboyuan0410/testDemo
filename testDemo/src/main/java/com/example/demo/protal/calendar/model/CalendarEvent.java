@@ -30,17 +30,17 @@ public class CalendarEvent {
 	/**
 	 * true or false，是否是全天事件
 	 */
-	private String allDay;
+	private boolean allDay;
 	
 	/**
 	 * 事件的开始时间
 	 */
-	private Date startDate;	
+	private Date start;	
 	
 	/**
 	 * 事件的结束时间
 	 */
-	private Date endDate;	
+	private Date end;	
 		
 	/**
 	 * 事件被点击将打开对应url

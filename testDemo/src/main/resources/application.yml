@@ -42,3 +42,5 @@ spring:
 # mybatis 配置
 mybatis:
     mapper-locations: classpath*:mybatis/mapper/*.xml
+    configuration:
+      jdbc-type-for-null: 'null' #注意：单引号

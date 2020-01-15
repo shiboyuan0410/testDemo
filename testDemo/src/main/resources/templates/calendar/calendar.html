@@ -97,13 +97,13 @@
 			checkboxClass : 'icheckbox_square-green',
 			radioClass : 'iradio_square-green',
 		});
+
 	});
 
-	//移动日历任务
+	//移动Draggable到日历任务
 	function dropEvent(arg) {
 		// is the "remove after drop" checkbox checked?
 		if (document.getElementById('drop-remove').checked) {
-			// if so, remove the element from the "Draggable Events" list
 			arg.draggedEl.parentNode.removeChild(arg.draggedEl);
 		}
 	};
@@ -111,15 +111,8 @@
 	function selectEvent(arg) {
 		var title = prompt('任务名称:');
 		if (title) {
-			calendar.addEvent({
-				title : title,
-				start : arg.start,
-				end : arg.end,
-				allDay : arg.allDay
-			})
-			
 			$.ajax({
-				url:"@{/}",
+				url:"/calendar/add",
 				type:"POST",
 				data:{
 					title : title,
@@ -128,7 +121,15 @@
 					allDay : arg.allDay
 				},
 				success:function(data){
-					
+					if(data.code == 200){
+						calendar.addEvent({
+							id : data.data,
+							title : title,
+							start : arg.start,
+							end : arg.end,
+							allDay : arg.allDay
+						})
+					}
 				}
 			})
 			
@@ -136,6 +137,71 @@
 		calendar.unselect();
 	};
 
+	function convertUTCTimeToLocalTime(date){
+		var localTime = date.getTime();
+	  	var localOffset = date.getTimezoneOffset()*60000;   //getTimezoneOffset()返回是以分钟为单位，需要转化成ms
+	  	var utc = localTime + localOffset;
+	  	var offset = 8; //以中国时间为例，东8区
+	  	var china = utc + (3600000*offset);
+	  	var nd = new Date(china);
+	  	return nd;
+	}
+	
+	
+	//拖动改变日历任务
+	function eventDrop(info) {
+		
+		console.log(convertUTCTimeToLocalTime(info.event.start));
+		console.log(convertUTCTimeToLocalTime(info.event.end));
+		
+        if (!confirm("Are you sure about this change?")) {
+        	event.revert();
+        }else{
+        	$.ajax({
+				url:"/calendar/update",
+				type:"POST",
+				data:{
+					id : info.event.id,
+					title : info.event.title,
+					start : info.event.start,
+					end : info.event.end,
+					allDay : info.event.allDay
+				},
+				success:function(data){
+					
+				}
+			})
+        }
+
+    }
+	
+	//伸缩改变日历任务大小
+	function eventResize(info){
+		
+		console.log(convertUTCTimeToLocalTime(info.event.start));
+		console.log(convertUTCTimeToLocalTime(info.event.end));
+		
+		if (!confirm("is this okay?")) {
+        	event.revert();
+        }else{
+        	$.ajax({
+				url:"/calendar/update",
+				type:"POST",
+				data:{
+					id : info.event.id,
+					title : info.event.title,
+					start : convertUTCTimeToLocalTime(info.event.start),
+					end : convertUTCTimeToLocalTime(info.event.end),
+					allDay : info.event.allDay
+				},
+				success:function(data){
+					
+				}
+			})
+        }
+		
+	}
+	
 	var eventList = [ {
 		title : 'All Day Event',
 		start : '2020-01-11'
@@ -146,7 +212,8 @@
 	}, {
 		groupId : 999,
 		title : 'Repeating Event',
-		start : '2020-01-15T16:00:00'
+		start : '2020-01-15 16:00:00',
+		end : '2020-01-15 16:30:00'
 	} ];
 
 	var calendar;
@@ -198,7 +265,7 @@
 			},
 			weekLabel : "周",
 			allDayText : "全天",
-
+			
 			eventLimit : true, // allow "more" link when too many events
 			eventLimitText : function(n) {
 				return "另外 " + n + " 个";
@@ -213,9 +280,12 @@
 			selectable : true,
 			selectMirror : true,
 			select : selectEvent,
+			
 			editable : true,
-
-			events : eventList
+			eventDrop: eventDrop,
+			eventResize: eventResize,
+			
+			events :"/calendar/all" //eventList //
 		});
 
 		calendar.render();

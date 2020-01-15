@@ -4498,7 +4498,7 @@ Docs & License: https://fullcalendar.io/
         startParam: 'start',
         endParam: 'end',
         timeZoneParam: 'timeZone',
-        timeZone: 'local',
+        timeZone: 'Asia/Shanghai',
         // allDayDefault: undefined,
         // locale
         locales: [],

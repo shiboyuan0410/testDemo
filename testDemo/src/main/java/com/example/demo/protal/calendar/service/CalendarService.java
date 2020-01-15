@@ -2,6 +2,7 @@ package com.example.demo.protal.calendar.service;
 
 import java.util.List;
 
+import com.example.demo.common.model.ReturnResult;
 import com.example.demo.protal.calendar.model.CalendarEvent;
 
 public interface CalendarService {
@@ -9,8 +10,9 @@ public interface CalendarService {
 	/**
 	 * 添加日历事件
 	 * @param calendarEvent
+	 * @return 
 	 */
-	void addCalendarEvent(CalendarEvent calendarEvent);
+	ReturnResult addCalendarEvent(CalendarEvent calendarEvent);
 
 	/**
 	 * 获取所有的日历事件

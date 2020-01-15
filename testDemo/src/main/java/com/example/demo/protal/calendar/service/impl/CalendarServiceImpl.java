@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.common.model.ReturnResult;
+import com.example.demo.common.utils.UniqueIdUtils;
 import com.example.demo.protal.calendar.dao.CalendarEventMapper;
 import com.example.demo.protal.calendar.model.CalendarEvent;
 import com.example.demo.protal.calendar.service.CalendarService;
@@ -16,13 +18,24 @@ public class CalendarServiceImpl implements CalendarService {
 	private CalendarEventMapper calendarEventMapper;
 	
 	@Override
-	public void addCalendarEvent(CalendarEvent calendarEvent) {
-		calendarEventMapper.insert(calendarEvent);
+	public ReturnResult addCalendarEvent(CalendarEvent calendarEvent) {
+		
+		try {
+			Long id = UniqueIdUtils.getId();
+			calendarEvent.setId(id);
+			calendarEventMapper.add(calendarEvent);
+			return ReturnResult.success(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ReturnResult.fail();
+		} 
+		
 	}
 	
 	@Override
 	public List<CalendarEvent> getAllCalendarEvent() {
-		return calendarEventMapper.selectAll();
+		List<CalendarEvent> calendarEventList = calendarEventMapper.getAllCalendarEvent();
+		return calendarEventList;
 	}
 
 	/**
@@ -30,7 +43,7 @@ public class CalendarServiceImpl implements CalendarService {
 	 */
 	@Override
 	public CalendarEvent getCalendarEventById(Long id) {
-		return calendarEventMapper.selectByPrimaryKey(id);
+		return calendarEventMapper.getById(id);
 	}
 
 	/**
@@ -38,7 +51,7 @@ public class CalendarServiceImpl implements CalendarService {
 	 */
 	@Override
 	public void updateCalendarEvent(CalendarEvent calendarEvent) {
-		calendarEventMapper.updateByPrimaryKey(calendarEvent);
+		calendarEventMapper.update(calendarEvent);
 	}
 
 	/**
@@ -46,7 +59,7 @@ public class CalendarServiceImpl implements CalendarService {
 	 */
 	@Override
 	public void delCalendarEventById(Long id) {
-		calendarEventMapper.deleteByPrimaryKey(id);
+		calendarEventMapper.delById(id);
 	}
 	
 }
