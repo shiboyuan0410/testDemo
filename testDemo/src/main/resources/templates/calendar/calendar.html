@@ -3,253 +3,223 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>日历</title>
+<title>日历</title>
 
-    <link rel="shortcut icon" th:href="@{/admin/favicon.ico}">
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/css/font-awesome.css}" rel="stylesheet">
-    <link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet">
+<link rel="shortcut icon" th:href="@{/admin/favicon.ico}">
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/css/font-awesome.css}" rel="stylesheet">
+<link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet">
 
-    
+<link th:href="@{/css/animate.css}" rel="stylesheet">
 
-    <link th:href="@{/css/animate.css}" rel="stylesheet">
-   
+<script th:src="@{/js/jquery.min.js}"></script>
 
+<link th:href="@{/css/plugins/fullcalendar/packages/core/main.css}" rel='stylesheet' />
+<link th:href="@{/css/plugins/fullcalendar/packages/daygrid/main.css}" rel='stylesheet' />
+<link th:href="@{/css/plugins/fullcalendar/packages/timegrid/main.css}" rel='stylesheet' />
+<link th:href="@{/css/plugins/fullcalendar/packages/list/main.css}" rel='stylesheet' />
 
-    <script th:src="@{/js/jquery.min.js}"></script>
-    
-	<link th:href="@{/js/plugins/fullcalendar/packages/core/main.css}" rel='stylesheet' />
-	<link th:href="@{/js/plugins/fullcalendar/packages/daygrid/main.css}" rel='stylesheet' />
-	<link th:href="@{/js/plugins/fullcalendar/packages/timegrid/main.css}" rel='stylesheet' />
+<link th:href="@{/css/style.css}" rel="stylesheet">
 
-	<link th:href="@{/js/plugins/fullcalendar/packages/list/main.css}" rel='stylesheet' />
-	
-	<link th:href="@{/css/style.css}" rel="stylesheet">
-	
-	<!-- <link th:href="@{/css/plugins/fullcalendar/fullcalendar.css}" rel="stylesheet">
-    <link th:href="@{/css/plugins/fullcalendar/fullcalendar.print.css}" rel="stylesheet"> -->
 <style>
-.fc-event, .fc-event a {
-    opacity: 0.5;
-}
-
 </style>
 </head>
 
 <body class="gray-bg">
-    <div class="wrapper wrapper-content">
-        <div class="row animated fadeInDown">
-            <div class="col-sm-3">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>待分配工作</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="calendar.html#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        
-                            <p>可拖动的工作</p>
-                            <div id='external-events'>
-	                            <div class='external-event navy-bg'>确定活动目标</div>
-	                            <div class='external-event navy-bg'>各部门职责及分工</div>
-	                            <div class='external-event navy-bg'>案例分享</div>
-	                            <div class='external-event navy-bg'>xxx</div>
-	                        </div>
-                            <p class="m-t">
-                                <input type='checkbox' id='drop-remove' class="i-checks" checked />
-                                <label for='drop-remove'>移动后删除</label>
-                            </p>
-                        
-                    </div>
-                </div>
-                <div class="ibox float-e-margins">
-                    <div class="ibox-content">
-                        <h2>FullCalendar</h2> 这是一个jQuery插件，它提供了全尺寸，可拖动，使用Ajax的操作方式，并且可以使用自己的feed格式，如谷歌日历。
-                        <p>
-                            <a href="http://arshaw.com/fullcalendar/" target="_blank">FullCalendar开发文档</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-9">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>FullCalendar示例 </h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="calendar.html#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li><a href="calendar.html#">选项1</a>
-                                </li>
-                                <li><a href="calendar.html#">选项2</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <div id="calendar"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    
-	
+	<div class="wrapper wrapper-content">
+		<div class="row animated fadeInDown">
+			<div class="col-sm-3">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5>待分配工作</h5>
+						<div class="ibox-tools">
+							<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<div class="ibox-content">
 
+						<p>可拖动的工作</p>
+						<div id='external-events'>
+							<div class='external-event navy-bg'>确定活动目标</div>
+							<div class='external-event navy-bg'>各部门职责及分工</div>
+							<div class='external-event navy-bg'>案例分享</div>
+							<div class='external-event navy-bg'>xxx</div>
+						</div>
+						<p class="m-t">
+							<input type='checkbox' id='drop-remove' class="i-checks" checked />
+							<label for='drop-remove'>移动后删除</label>
+						</p>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5>日历</h5>
+					</div>
+					<div class="ibox-content">
+						<div id="calendar"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 
-	<!-- 全局js -->
-    <script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
+<!-- 全局js -->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
 
-    <!-- 自定义js -->
-    <script th:src="@{/js/content.js}"></script>
+<!-- 自定义js -->
+<script th:src="@{/js/content.js}"></script>
 
-    <script th:src="@{/js/jquery-ui.custom.min.js}"></script>
+<script th:src="@{/js/jquery-ui.custom.min.js}"></script>
 
-    <!-- iCheck -->
-    <script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
-    <!-- Full Calendar -->
-    <!-- <script th:src="@{/js/plugins/fullcalendar/fullcalendar.min.js}"></script> -->
-    
-	<script th:src="@{/js/plugins/fullcalendar/packages/core/main.js}"></script>
-	<script th:src="@{/js/plugins/fullcalendar/packages/interaction/main.js}"></script>
-	<script th:src="@{/js/plugins/fullcalendar/packages/daygrid/main.js}"></script>
-	<script th:src="@{/js/plugins/fullcalendar/packages/timegrid/main.js}"></script>
-	<script th:src="@{/js/plugins/fullcalendar/packages/list/main.js}"></script>
+<!-- iCheck -->
+<script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
 
-    <script>
-        $(document).ready(function () {
+<!-- Full Calendar -->
+<script th:src="@{/js/plugins/fullcalendar/packages/core/main.js}"></script>
+<script th:src="@{/js/plugins/fullcalendar/packages/interaction/main.js}"></script>
+<script th:src="@{/js/plugins/fullcalendar/packages/daygrid/main.js}"></script>
+<script th:src="@{/js/plugins/fullcalendar/packages/timegrid/main.js}"></script>
+<script th:src="@{/js/plugins/fullcalendar/packages/list/main.js}"></script>
 
-            $('.i-checks').iCheck({
-                checkboxClass: 'icheckbox_square-green',
-                radioClass: 'iradio_square-green',
-            });
+<script>
+	$(document).ready(function() {
+		$('.i-checks').iCheck({
+			checkboxClass : 'icheckbox_square-green',
+			radioClass : 'iradio_square-green',
+		});
+	});
 
-        });
-        
-        
-        document.addEventListener('DOMContentLoaded', function() {
-        	var Calendar = FullCalendar.Calendar;
-            var Draggable = FullCalendarInteraction.Draggable;
-        	
-            var containerEl = document.getElementById('external-events');
-            new Draggable(containerEl, {
-              itemSelector: '.external-event',
-              eventData: function(eventEl) {
-                return {
-                  title: eventEl.innerText.trim()
-                }
-              }
-            });
-        	
-            var calendarEl = document.getElementById('calendar');
+	//移动日历任务
+	function dropEvent(arg) {
+		// is the "remove after drop" checkbox checked?
+		if (document.getElementById('drop-remove').checked) {
+			// if so, remove the element from the "Draggable Events" list
+			arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+		}
+	};
+	//点击时间创建日历任务
+	function selectEvent(arg) {
+		var title = prompt('任务名称:');
+		if (title) {
+			calendar.addEvent({
+				title : title,
+				start : arg.start,
+				end : arg.end,
+				allDay : arg.allDay
+			})
+			
+			$.ajax({
+				url:"@{/}",
+				type:"POST",
+				data:{
+					title : title,
+					start : arg.start,
+					end : arg.end,
+					allDay : arg.allDay
+				},
+				success:function(data){
+					
+				}
+			})
+			
+		}
+		calendar.unselect();
+	};
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-              plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
-              header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-              },
-              
-              height: 'auto',
-              locale: 'zh-cn',
-              axisFormat: 'HH:mm',
-              minTime: '08:00:00',
-              maxTime: '19:00:00',
-              
-              code: "zh-cn",
-              week: {
-                  // GB/T 7408-1994《数据元和交换格式·信息交换·日期和时间表示法》与ISO 8601:1988等效
-                  dow: 1,
-                  doy: 4 // The week that contains Jan 4th is the first week of the year.
-              },
-              buttonText: {
-                  today: "今天",
-                  month: "月",
-                  week: "周",
-                  day: "日",
-                  list: "日程"
-              },
-              weekLabel: "周",
-              allDayText: "全天",
-              eventLimitText: function (n) {
-                  return "另外 " + n + " 个";
-              },
-              noEventsMessage: "没有事件显示",
-              
-              
-              editable: true,//事件是否可编辑
-              droppable: true,//
-              drop: function(arg) {
-                // is the "remove after drop" checkbox checked?
-                if (document.getElementById('drop-remove').checked) {
-                  // if so, remove the element from the "Draggable Events" list
-                  arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-                }
-              },
-              
-              navLinks: true, // can click day/week names to navigate views
-              selectable: true,
-              selectMirror: true,
-              select: function(arg) {
-                var title = prompt('任务名称:');
-                if (title) {
-                  calendar.addEvent({
-                    title: title,
-                    start: arg.start,
-                    end: arg.end,
-                    allDay: arg.allDay
-                  })
-                }
-                calendar.unselect()
-              },
-              editable: true,
-              eventLimit: true, // allow "more" link when too many events
-              events: [
-                {
-                  title: 'All Day Event',
-                  start: '2020-01-11'
-                },
-                {
-                  title: 'Long Event',
-                  start: '2020-01-14',
-                  end: '2020-01-14'
-                },
-                {
-                  groupId: 999,
-                  title: 'Repeating Event',
-                  start: '2020-01-15T16:00:00'
-                }
-              ]
-            });
+	var eventList = [ {
+		title : 'All Day Event',
+		start : '2020-01-11'
+	}, {
+		title : 'Long Event',
+		start : '2020-01-14',
+		end : '2020-01-14'
+	}, {
+		groupId : 999,
+		title : 'Repeating Event',
+		start : '2020-01-15T16:00:00'
+	} ];
 
-            calendar.render();
-          });
+	var calendar;
+	var Calendar = FullCalendar.Calendar;
+	var Draggable = FullCalendarInteraction.Draggable;
 
-        
-    </script>
+	var containerEl = document.getElementById('external-events');
+	var calendarEl = document.getElementById('calendar');
+
+	document.addEventListener('DOMContentLoaded', function() {
+
+		new Draggable(containerEl, {
+			itemSelector : '.external-event',
+			eventData : function(eventEl) {
+				return {
+					title : eventEl.innerText.trim()
+				}
+			}
+		});
+
+		calendar = new FullCalendar.Calendar(calendarEl, {
+			plugins : [ 'interaction', 'dayGrid', 'timeGrid' ],
+			header : {
+				left : 'prev,next today',
+				center : 'title',
+				right : 'dayGridMonth,timeGridWeek,timeGridDay'
+			},
+
+			height : 'auto',
+			locale : 'zh-cn',
+			axisFormat : 'HH:mm',
+			minTime : '08:00:00',
+			maxTime : '19:00:00',
+
+			//中文编码
+			code : "zh-cn",
+			week : {
+				// GB/T 7408-1994《数据元和交换格式·信息交换·日期和时间表示法》与ISO 8601:1988等效
+				dow : 1,
+				doy : 4
+			// The week that contains Jan 4th is the first week of the year.
+			},
+			buttonText : {
+				today : "今天",
+				month : "月",
+				week : "周",
+				day : "日",
+				list : "日程"
+			},
+			weekLabel : "周",
+			allDayText : "全天",
+
+			eventLimit : true, // allow "more" link when too many events
+			eventLimitText : function(n) {
+				return "另外 " + n + " 个";
+			},
+			noEventsMessage : "没有事件显示",
+
+			editable : true,//事件是否可编辑
+			droppable : true,//
+			drop : dropEvent,
+
+			navLinks : true, // can click day/week names to navigate views
+			selectable : true,
+			selectMirror : true,
+			select : selectEvent,
+			editable : true,
+
+			events : eventList
+		});
+
+		calendar.render();
+	});
+</script>
 
 </html>

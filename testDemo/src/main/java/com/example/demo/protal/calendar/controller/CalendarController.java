@@ -28,15 +28,6 @@ public class CalendarController {
 	}
 	
 	/**
-	 * 展示页面
-	 */
-	@RequestMapping("/show2")
-	public String showCalendar2() {
-		return "/calendar/calendar2";
-	}
-	
-	
-	/**
 	 * 添加日历任务
 	 */
 	public void addCalendarEvent(CalendarEvent calendarEvent) {
