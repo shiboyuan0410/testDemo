@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>日历</title>
+
+<link rel="shortcut icon" th:href="@{/admin/favicon.ico}">
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/css/font-awesome.css}" rel="stylesheet">
+<link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet">
+
+<link th:href="@{/css/animate.css}" rel="stylesheet">
+
+<link th:href="@{/css/jquery.qtip.min.css}" rel='stylesheet' />
+
+<link th:href="@{/css/plugins/fullcalendar/packages/core/main.css}" rel='stylesheet' />
+<link th:href="@{/css/plugins/fullcalendar/packages/daygrid/main.css}" rel='stylesheet' />
+<link th:href="@{/css/plugins/fullcalendar/packages/timegrid/main.css}" rel='stylesheet' />
+<link th:href="@{/css/plugins/fullcalendar/packages/list/main.css}" rel='stylesheet' />
+
+<link th:href="@{/css/style.css}" rel="stylesheet">
+
+<style>
+	.fc-toolbar h2{
+		margin-top: 10px;
+		margin-bottom: -10px;
+	}
+	
+	.fc-list-item-title.fc-widget-content >a {
+		display: block;
+		width: 60px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+
+	.qtip-event-detail {
+	    width: 255px;
+	    background-color: #fff;
+	    border: 1px solid #e0e0e0;
+	    border-radius: 2px;
+	    border-top:3px solid #2878f0;
+	    padding:2px;
+	    box-shadow: 0 0 8px rgba(0,0,0,.2);
+	}
+	.qtip-event-detail .qtip-tip{
+	    top: 6px !important;
+	}
+	.event-detail-wrap{
+	    display: none;
+	    font-size: 14px;
+	    line-height: 26px;
+	    color: #666
+	}
+	.detail-info-list{
+	    color: #999;
+	}
+	.event-detail-wrap .action-group{
+	    border-top:1px solid #e0e0e0;
+	    padding-top:8px;
+	    margin-top: 8px;
+	    text-align: right;
+	}
+	.event-detail-wrap .action-group a{
+	    color: #2878f0;
+	    text-decoration: none;
+	    display: inline-block;
+	    margin-left: 6px;
+	}
+
+</style>
+</head>
+
+<body>
+	<div>
+		<div class="row animated fadeInDown">
+			<div class="col-sm-9">
+				<div class="ibox float-e-margins">
+					<div id="calendar"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<div class="event-detail-wrap" id="event-detail">
+	    <div class="detail-info-list">
+	        <div class="js_event_detail_time"></div>
+	        <div class="js_event_detail_team"></div>
+	        <div class="js_event_detail_subject"></div>
+	        <div class="js_event_detail_teacher"></div>
+	    </div>
+
+	    <div class="action-group">
+	        <a href="#">日程详情</a>
+	        <a href="#">复制</a>
+	        <a href="#">编辑</a>
+	        <a href="#">删除</a>
+	    </div>
+	</div>
+	
+</body>
+
+<!-- 全局js -->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+
+<!-- 自定义js -->
+<script th:src="@{/js/content.js}"></script>
+
+<script th:src="@{/js/jquery-ui.custom.min.js}"></script>
+
+<!-- iCheck -->
+<script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+
+
+<script th:src="@{/js/jquery.qtip.min.js}"></script>
+
+<!-- Full Calendar -->
+<script th:src="@{/js/plugins/fullcalendar/packages/core/main.js}"></script>
+<script th:src="@{/js/plugins/fullcalendar/packages/interaction/main.js}"></script>
+<script th:src="@{/js/plugins/fullcalendar/packages/daygrid/main.js}"></script>
+<script th:src="@{/js/plugins/fullcalendar/packages/timegrid/main.js}"></script>
+<script th:src="@{/js/plugins/fullcalendar/packages/list/main.js}"></script>
+
+<script>
+	function eventRender(info){
+        var eventTitle = info.event.title;
+        console.log(eventTitle);
+	    $(".js_event_detail_team").text(eventTitle);
+	    
+	    $(info.el).qtip({
+	        content: {
+	            text:  $('#event-detail') //要提示的内容，就是上面创建的那个浮层
+	        },
+	        position: {
+	            my: 'left top', //箭头的位置
+	            at: 'top right',//提示框的位置
+	        },
+	        show: {
+	            solo: true //保证每次只显示一个提示框
+	        },
+	        hide: {
+	            fixed: true, //能够操作提示框
+	            delay: 600,//多久之后隐藏提示框
+	            event:'mouseleave',
+	        },
+	        style: {
+	            classes: 'qtip-event-detail' //自定义的弹层样式
+	        }
+	    });
+	    
+	};
+
+	var calendar;
+	var calendarEl = document.getElementById('calendar');
+
+	document.addEventListener('DOMContentLoaded', function() {
+
+		calendar = new FullCalendar.Calendar(calendarEl, {
+			plugins : [ 'interaction', 'dayGrid', 'timeGrid','list'],
+			header : {
+				left : '',
+				center : 'title',
+				right : ''
+			},
+			defaultView : 'listDay',
+			
+			height : 'auto',
+			locale : 'zh-cn',
+
+			//中文编码
+			code : "zh-cn",
+			week : {
+				// GB/T 7408-1994《数据元和交换格式·信息交换·日期和时间表示法》与ISO 8601:1988等效
+				dow : 1,
+				doy : 4
+			// The week that contains Jan 4th is the first week of the year.
+			},
+			buttonText : {
+				today : "今天",
+				list : "日程"
+			},
+			noEventsMessage : "没有事件显示",
+
+			events :"/calendar/all",
+			
+			eventRender : eventRender
+		});
+
+		calendar.render();
+	});
+	
+</script>
+
+</html>

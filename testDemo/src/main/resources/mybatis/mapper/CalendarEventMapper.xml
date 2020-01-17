@@ -23,27 +23,28 @@
 		
 		<result property="textColor" column="TEXTCOLOR" jdbcType="VARCHAR"/>
 		
+		<result property="userId" column="USERID" jdbcType="NUMERIC"/>
 	</resultMap>
 
 	<sql id="columns">
-		id,title,allDay,startDate,endDate,url,className,editable,color,backgroundColor,borderColor,textColor
+		id,title,allDay,startDate,endDate,url,className,editable,color,backgroundColor,borderColor,textColor,userId
 	</sql>
 	
     
 	<insert id="add" parameterType="com.example.demo.protal.calendar.model.CalendarEvent">
 		INSERT INTO SYS_CALENDAR_EVENT
-		(id,title,allDay,startDate,endDate,url,className,editable,color,backgroundColor,borderColor,textColor)
+		(id,title,allDay,startDate,endDate,url,className,editable,color,backgroundColor,borderColor,textColor,userId)
 		VALUES
 		(#{id,jdbcType=NUMERIC}, #{title,jdbcType=VARCHAR}, #{allDay,jdbcType=VARCHAR},
 		 #{start,jdbcType=TIMESTAMP},#{end,jdbcType=TIMESTAMP},#{url,jdbcType=VARCHAR},
 		 #{className,jdbcType=VARCHAR},#{editable,jdbcType=VARCHAR},#{color,jdbcType=VARCHAR},
-		 #{backgroundColor,jdbcType=VARCHAR},#{borderColor,jdbcType=VARCHAR},#{textColor,jdbcType=VARCHAR})
+		 #{backgroundColor,jdbcType=VARCHAR},#{borderColor,jdbcType=VARCHAR},#{textColor,jdbcType=VARCHAR},#{userId,jdbcType=NUMERIC})
 	</insert>
 	
 	<delete id="delById" parameterType="java.lang.Long">
 		DELETE FROM SYS_CALENDAR_EVENT  
 		WHERE
-		id=#{id}
+		id=#{id} and  userId=#{userId}
 	</delete>
 	
 	<update id="update" parameterType="com.example.demo.protal.calendar.model.CalendarEvent">
@@ -59,25 +60,25 @@
 		color = #{color,jdbcType=VARCHAR},
 		backgroundColor = #{backgroundColor,jdbcType=VARCHAR},
 		borderColor = #{borderColor,jdbcType=VARCHAR},
-		textColor = #{textColor,jdbcType=VARCHAR}
+		textColor = #{textColor,jdbcType=VARCHAR},
+		userId = #{userId,jdbcType=NUMERIC}
 		
 		WHERE
-		id=#{id}
+		id=#{id} and userId=#{userId,jdbcType=NUMERIC}
 	</update>
-	
 	
 	<select id="getById" parameterType="java.lang.Long" resultMap="CalendarEvent">
 		SELECT <include refid="columns"/>
 		FROM SYS_CALENDAR_EVENT t
 		WHERE
-		t.id=#{id}
+		t.id=#{id} and userId=#{userId}
 	</select>
 	
-	
-	<select id="getAllCalendarEvent" resultMap="CalendarEvent">
+	<select id="getAllCalendarEvent" resultMap="CalendarEvent" parameterType="java.lang.Long">
 		SELECT  <include refid="columns"/>
 		FROM SYS_CALENDAR_EVENT t   
+		WHERE 
+		userId=#{userId}
 	</select>
-	
 	
 </mapper>

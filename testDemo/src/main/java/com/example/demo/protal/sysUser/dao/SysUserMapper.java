@@ -19,6 +19,6 @@ public interface SysUserMapper extends BaseMapper<SysUser>{
 
 	SysUser getById(Long id);
 
-	int checkUser(SysUser sysUser);
+	SysUser checkUser(SysUser sysUser);
 	
 }

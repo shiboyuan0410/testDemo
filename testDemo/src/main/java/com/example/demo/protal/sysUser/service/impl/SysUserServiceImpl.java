@@ -77,7 +77,7 @@ public class SysUserServiceImpl implements SysUserService {
 	 * 判断用户是否存在
 	 */
 	@Override
-	public int checkUser(SysUser sysUser) {
+	public SysUser checkUser(SysUser sysUser) {
 		
 		return sysUserMapper.checkUser(sysUser);
 	}

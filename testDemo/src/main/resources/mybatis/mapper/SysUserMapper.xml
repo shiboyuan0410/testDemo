@@ -12,12 +12,15 @@
 		
 		<result property="fullname" column="fullname" jdbcType="VARCHAR"/>
 		<result property="email" column="email" jdbcType="VARCHAR"/>
+		
+		<result property="emailLicense" column="emailLicense" jdbcType="VARCHAR"/>
+		
 		<result property="address" column="address" jdbcType="VARCHAR"/>
 		
 	</resultMap>
 
 	<sql id="columns">
-		id,account,password,fullname,email,address
+		id,account,password,fullname,email,emailLicense,address
 	</sql>
 	
     
@@ -25,10 +28,10 @@
 	<insert id="add" parameterType="com.example.demo.protal.sysUser.model.SysUser">
 		INSERT INTO sys_user
 		(id,account,password,
-		fullname,email,address)
+		fullname,email,emailLicense,address)
 		VALUES
 		(#{id,jdbcType=NUMERIC}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-		 #{fullname,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR})
+		 #{fullname,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{emailLicense,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR})
 	</insert>
 	
 	<delete id="delById" parameterType="java.lang.Long">
@@ -43,6 +46,7 @@
 		password=#{password,jdbcType=VARCHAR} , 
 		fullname=#{fullname,jdbcType=VARCHAR} , 
 		email=#{email,jdbcType=VARCHAR} , 
+		emailLicense=#{emailLicense,jdbcType=VARCHAR} , 
 		address=#{address,jdbcType=VARCHAR}
 		
 		WHERE
@@ -62,8 +66,8 @@
 	</select>
 	
 	
-	<select id="checkUser" parameterType="com.example.demo.protal.sysUser.model.SysUser" resultType="int">
-		SELECT count(id) 
+	<select id="checkUser" parameterType="com.example.demo.protal.sysUser.model.SysUser" resultMap="SysUser">
+		SELECT <include refid="columns"/>
 		FROM sys_user t 
 		WHERE
 			t.account = #{account,jdbcType=VARCHAR}

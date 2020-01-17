@@ -20,8 +20,6 @@ spring:
 #邮箱
     mail:
       host: imap.163.com
-      username: shiboyuan0410@163.com
-      password: s3986483
       protocol: imap
       port: 143
       properties:

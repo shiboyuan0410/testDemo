@@ -92,12 +92,13 @@
 <script th:src="@{/js/plugins/fullcalendar/packages/list/main.js}"></script>
 
 <script>
+
+	
 	$(document).ready(function() {
 		$('.i-checks').iCheck({
 			checkboxClass : 'icheckbox_square-green',
 			radioClass : 'iradio_square-green',
 		});
-
 	});
 
 	//移动Draggable到日历任务
@@ -107,6 +108,8 @@
 			arg.draggedEl.parentNode.removeChild(arg.draggedEl);
 		}
 	};
+	
+	
 	//点击时间创建日历任务
 	function selectEvent(arg) {
 		var title = prompt('任务名称:');
@@ -129,6 +132,8 @@
 							end : arg.end,
 							allDay : arg.allDay
 						})
+					}else if(data.code == 302){
+						window.location.href = "/";
 					}
 				}
 			})
@@ -137,69 +142,46 @@
 		calendar.unselect();
 	};
 
-	function convertUTCTimeToLocalTime(date){
-		var localTime = date.getTime();
-	  	var localOffset = date.getTimezoneOffset()*60000;   //getTimezoneOffset()返回是以分钟为单位，需要转化成ms
-	  	var utc = localTime + localOffset;
-	  	var offset = 8; //以中国时间为例，东8区
-	  	var china = utc + (3600000*offset);
-	  	var nd = new Date(china);
-	  	return nd;
-	}
-	
-	
 	//拖动改变日历任务
 	function eventDrop(info) {
-		
-		console.log(convertUTCTimeToLocalTime(info.event.start));
-		console.log(convertUTCTimeToLocalTime(info.event.end));
-		
-        if (!confirm("Are you sure about this change?")) {
-        	event.revert();
-        }else{
-        	$.ajax({
-				url:"/calendar/update",
-				type:"POST",
-				data:{
-					id : info.event.id,
-					title : info.event.title,
-					start : info.event.start,
-					end : info.event.end,
-					allDay : info.event.allDay
-				},
-				success:function(data){
-					
-				}
-			})
-        }
-
+       	$.ajax({
+			url:"/calendar/update",
+			type:"POST",
+			data:{
+				id : info.event.id,
+				title : info.event.title,
+				start : info.event.start,
+				end : info.event.end,
+				allDay : info.event.allDay
+			},
+			success:function(data){
+				
+			},
+			error:function(){
+				info.revert();
+			}
+		})
     }
 	
 	//伸缩改变日历任务大小
 	function eventResize(info){
-		
-		console.log(convertUTCTimeToLocalTime(info.event.start));
-		console.log(convertUTCTimeToLocalTime(info.event.end));
-		
-		if (!confirm("is this okay?")) {
-        	event.revert();
-        }else{
-        	$.ajax({
-				url:"/calendar/update",
-				type:"POST",
-				data:{
-					id : info.event.id,
-					title : info.event.title,
-					start : convertUTCTimeToLocalTime(info.event.start),
-					end : convertUTCTimeToLocalTime(info.event.end),
-					allDay : info.event.allDay
-				},
-				success:function(data){
-					
-				}
-			})
-        }
-		
+       	$.ajax({
+			url:"/calendar/update",
+			type:"POST",
+			data:{
+				id : info.event.id,
+				title : info.event.title,
+				start : info.event.start,
+				end : info.event.end,
+				allDay : info.event.allDay
+			},
+			success:function(data){
+				
+			},
+			error:function(){
+				info.revert();
+			}
+		})
 	}
 	
 	var eventList = [ {

@@ -87,11 +87,11 @@ public class SysUserController {
 	@ResponseBody
 	public ReturnResult checkUser(SysUser sysUser,HttpServletRequest request) {
 		
-		int checkUser = sysUserService.checkUser(sysUser);
-		if(checkUser == 1) {
+		SysUser checkUser = sysUserService.checkUser(sysUser);
+		if(BeanUtils.isNotEmpty(checkUser)) {
 			
 			HttpSession session=request.getSession();//获取session并将sysUser存入session对象
-			session.setAttribute("sysUser", sysUser);
+			session.setAttribute("sysUser", checkUser);
 
 			return ReturnResult.success();
 		}else {

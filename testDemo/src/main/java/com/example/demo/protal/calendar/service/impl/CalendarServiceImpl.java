@@ -18,11 +18,13 @@ public class CalendarServiceImpl implements CalendarService {
 	private CalendarEventMapper calendarEventMapper;
 	
 	@Override
-	public ReturnResult addCalendarEvent(CalendarEvent calendarEvent) {
+	public ReturnResult addCalendarEvent(CalendarEvent calendarEvent,Long userId) {
 		
 		try {
 			Long id = UniqueIdUtils.getId();
 			calendarEvent.setId(id);
+			calendarEvent.setUserId(userId);
+			
 			calendarEventMapper.add(calendarEvent);
 			return ReturnResult.success(id);
 		} catch (Exception e) {
@@ -33,8 +35,8 @@ public class CalendarServiceImpl implements CalendarService {
 	}
 	
 	@Override
-	public List<CalendarEvent> getAllCalendarEvent() {
-		List<CalendarEvent> calendarEventList = calendarEventMapper.getAllCalendarEvent();
+	public List<CalendarEvent> getAllCalendarEvent(Long userId) {
+		List<CalendarEvent> calendarEventList = calendarEventMapper.getAllCalendarEvent(userId);
 		return calendarEventList;
 	}
 
@@ -42,24 +44,40 @@ public class CalendarServiceImpl implements CalendarService {
 	 * 根据id获取日历事件
 	 */
 	@Override
-	public CalendarEvent getCalendarEventById(Long id) {
-		return calendarEventMapper.getById(id);
+	public CalendarEvent getCalendarEventById(Long id,Long userId) {
+		return calendarEventMapper.getById(id,userId);
 	}
 
 	/**
 	 * 更新日历任务事件
 	 */
 	@Override
-	public void updateCalendarEvent(CalendarEvent calendarEvent) {
-		calendarEventMapper.update(calendarEvent);
+	public ReturnResult updateCalendarEvent(CalendarEvent calendarEvent) {
+		
+		try {
+			calendarEventMapper.update(calendarEvent);
+			return ReturnResult.success();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ReturnResult.fail();
+		} 
+		
 	}
 
 	/**
 	 * 删除日历任务事件
 	 */
 	@Override
-	public void delCalendarEventById(Long id) {
-		calendarEventMapper.delById(id);
+	public ReturnResult delCalendarEventById(Long id,Long userId) {
+		
+		try {
+			calendarEventMapper.delById(id,userId);
+			return ReturnResult.success(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ReturnResult.fail();
+		} 
+		
 	}
 	
 }

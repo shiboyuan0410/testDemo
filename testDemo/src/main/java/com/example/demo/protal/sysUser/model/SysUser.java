@@ -25,7 +25,9 @@ public class SysUser {
 	
 	// 邮箱
 	protected String email;
-
+	// 邮箱第三方授权码
+	protected String emailLicense;
+	
 	//地址
 	protected String address;
 

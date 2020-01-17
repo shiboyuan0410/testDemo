@@ -76,5 +76,10 @@ public class CalendarEvent {
 	 * 文本颜色
 	 */
 	private String textColor;	
-				
+		
+	
+	/**
+	 * 人员的的id
+	 */
+	private Long userId;
 }

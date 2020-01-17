@@ -15,11 +15,11 @@ public interface CalendarEventMapper extends BaseMapper<CalendarEvent>{
 
 	void update(CalendarEvent calendarEvent);
 
-	CalendarEvent getById(Long id);
+	CalendarEvent getById(Long id,Long userId);
 
-	void delById(Long id);
+	void delById(Long id,Long userId);
 
-	List<CalendarEvent> getAllCalendarEvent();
+	List<CalendarEvent> getAllCalendarEvent(Long userId);
 
 	
 }

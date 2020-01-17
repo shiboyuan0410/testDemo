@@ -17,6 +17,7 @@ import com.example.demo.protal.mail.model.Mail;
 import com.example.demo.protal.mail.model.MailConfig;
 import com.example.demo.protal.mail.service.MailService;
 import com.example.demo.protal.mail.util.MailUtil;
+import com.example.demo.protal.sysUser.model.SysUser;
 
 @Service
 public class MailServiceImpl implements MailService {
@@ -24,18 +25,15 @@ public class MailServiceImpl implements MailService {
 	@Autowired
 	private MailConfig mailConfig;
 
-
 	@Override
-	public Map<String, Object> getAllMail(int currentPage, int size) {
+	public Map<String, Object> getAllMail(int currentPage, int size,SysUser sysUser) {
 
 		Map<String,Object> mailMap = new HashMap<String,Object>();
-
 		List<Mail> mailList =new ArrayList<Mail>();
-
-
+		
 		try {
 
-			Store store = MailUtil.getMailConnect(mailConfig);
+			Store store = MailUtil.getMailConnect(mailConfig.getMailConfig());
 
 			// 获得收件箱 
 			Folder folder = store.getFolder("INBOX"); 
@@ -109,7 +107,7 @@ public class MailServiceImpl implements MailService {
 		Store store;
 		int total = 0;
 		try {
-			store = MailUtil.getMailConnect(mailConfig);
+			store = MailUtil.getMailConnect(mailConfig.getMailConfig());
 			// 获得收件箱 
 			Folder folder = store.getFolder("INBOX"); 
 			// 以读写模式打开收件箱 
@@ -138,7 +136,7 @@ public class MailServiceImpl implements MailService {
 
 
 		try {
-			Store store = MailUtil.getMailConnect(mailConfig);
+			Store store = MailUtil.getMailConnect(mailConfig.getMailConfig());
 			// 获得收件箱 
 			Folder folder = store.getFolder("INBOX"); 
 			// 以读写模式打开收件箱 

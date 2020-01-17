@@ -15,6 +15,6 @@ public interface SysUserService {
 
 	SysUser getById(Long id);
 
-	int checkUser(SysUser sysUser);
+	SysUser checkUser(SysUser sysUser);
 
 }
