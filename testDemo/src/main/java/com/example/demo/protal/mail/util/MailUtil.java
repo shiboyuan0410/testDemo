@@ -103,6 +103,13 @@ public class MailUtil {
 			}
 		}
 
+		
+		//TODO 邮件 附件
+		/**
+		 * 邮件里附件的保存规则需要更正 
+		 * (目前下载所有附件到本地 导致 附件如果过大就会卡住)
+		 */
+		
 		//是否包含附件
 		boolean isContainerAttachment = isContainAttachment((Part) mes);  
 		List<String> imgsList = new ArrayList<String>();
@@ -353,7 +360,6 @@ public class MailUtil {
 
 
 			} catch (MessagingException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 

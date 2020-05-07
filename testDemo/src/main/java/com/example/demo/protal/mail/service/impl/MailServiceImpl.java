@@ -90,7 +90,6 @@ public class MailServiceImpl implements MailService {
 			folder.close(false); 
 			store.close(); 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 

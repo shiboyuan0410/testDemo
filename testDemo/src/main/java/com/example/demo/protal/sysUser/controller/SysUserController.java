@@ -1,16 +1,11 @@
 package com.example.demo.protal.sysUser.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -100,19 +95,4 @@ public class SysUserController {
 		
 	}
 	
-	/*@Autowired
-	@Qualifier("primaryJdbcTemplate")
-	protected JdbcTemplate jdbcTemplate_oracle;
-	
-	@Autowired
-	@Qualifier("secondaryJdbcTemplate")
-	protected JdbcTemplate jdbcTemplate_mysql;
-	
-	@RequestMapping("/cs")
-	@ResponseBody
-	public int cs() {
-		List<Map<String, Object>> queryForList = jdbcTemplate_oracle.queryForList("select * from sys_user");
-		System.out.println("oracle -----" + queryForList.size());
-		return queryForList.size();
-	}*/
 }

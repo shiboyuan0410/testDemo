@@ -13,7 +13,6 @@ import lombok.Data;
  *
  */
 @Data
-@Table(name="SYS_CALENDAR_EVENT")
 public class CalendarEvent {
 	
 	/**

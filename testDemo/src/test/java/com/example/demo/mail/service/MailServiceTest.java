@@ -69,7 +69,6 @@ public class MailServiceTest {
 			folder.close(false); 
 			store.close(); 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	} 

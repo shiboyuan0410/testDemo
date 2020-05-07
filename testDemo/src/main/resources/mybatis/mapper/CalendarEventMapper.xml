@@ -32,7 +32,7 @@
 	
     
 	<insert id="add" parameterType="com.example.demo.protal.calendar.model.CalendarEvent">
-		INSERT INTO SYS_CALENDAR_EVENT
+		INSERT INTO sys_calendar_event
 		(id,title,allDay,startDate,endDate,url,className,editable,color,backgroundColor,borderColor,textColor,userId)
 		VALUES
 		(#{id,jdbcType=NUMERIC}, #{title,jdbcType=VARCHAR}, #{allDay,jdbcType=VARCHAR},
@@ -42,13 +42,13 @@
 	</insert>
 	
 	<delete id="delById" parameterType="java.lang.Long">
-		DELETE FROM SYS_CALENDAR_EVENT  
+		DELETE FROM sys_calendar_event  
 		WHERE
 		id=#{id} and  userId=#{userId}
 	</delete>
 	
 	<update id="update" parameterType="com.example.demo.protal.calendar.model.CalendarEvent">
-		UPDATE SYS_CALENDAR_EVENT  SET
+		UPDATE sys_calendar_event  SET
 		
 		title = #{title,jdbcType=VARCHAR},
 		allDay = #{allDay,jdbcType=VARCHAR},
@@ -69,14 +69,14 @@
 	
 	<select id="getById" parameterType="java.lang.Long" resultMap="CalendarEvent">
 		SELECT <include refid="columns"/>
-		FROM SYS_CALENDAR_EVENT t
+		FROM sys_calendar_event t
 		WHERE
 		t.id=#{id} and userId=#{userId}
 	</select>
 	
 	<select id="getAllCalendarEvent" resultMap="CalendarEvent" parameterType="java.lang.Long">
 		SELECT  <include refid="columns"/>
-		FROM SYS_CALENDAR_EVENT t   
+		FROM sys_calendar_event t   
 		WHERE 
 		userId=#{userId}
 	</select>
