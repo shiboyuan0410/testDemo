@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import com.example.demo.common.utils.EncryptUtils;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.common.model.ReturnResult;
@@ -39,6 +40,12 @@ public class SysUserServiceImpl implements SysUserService {
 			
 			Long id = UniqueIdUtils.getId();
 			sysUser.setId(id);
+
+			String password = sysUser.getPassword();
+			password = EncryptUtils.encryptBasedDes(password);
+			sysUser.setPassword(password);
+
+
 			int insert = sysUserMapper.add(sysUser);
 			
 			if(insert == 1) {
@@ -78,7 +85,11 @@ public class SysUserServiceImpl implements SysUserService {
 	 */
 	@Override
 	public SysUser checkUser(SysUser sysUser) {
-		
+
+		String password = sysUser.getPassword();
+		password = EncryptUtils.encryptBasedDes(password);
+		sysUser.setPassword(password);
+
 		return sysUserMapper.checkUser(sysUser);
 	}
 	

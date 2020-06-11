@@ -1,20 +1,19 @@
 package com.example.demo.protal.sysUser.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.example.demo.common.model.ReturnResult;
+import com.example.demo.common.utils.BeanUtils;
+import com.example.demo.common.utils.EncryptUtils;
+import com.example.demo.protal.sysUser.model.SysUser;
+import com.example.demo.protal.sysUser.service.SysUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.demo.common.model.ReturnResult;
-import com.example.demo.common.utils.BeanUtils;
-import com.example.demo.protal.sysUser.model.SysUser;
-import com.example.demo.protal.sysUser.service.SysUserService;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * 用户
@@ -70,10 +69,16 @@ public class SysUserController {
 	@RequestMapping("/save")
 	@ResponseBody
 	public ReturnResult save(SysUser sysUser) {
+
+		String password = sysUser.getPassword();
+		password = EncryptUtils.encryptBasedDes(password);
+		sysUser.setPassword(password);
 		return sysUserService.save(sysUser);
 	}
-	
-	
+
+
+
+
 	/**
 	 * 用户登录验证
 	 * @return
@@ -81,10 +86,11 @@ public class SysUserController {
 	@RequestMapping("/checkUser")
 	@ResponseBody
 	public ReturnResult checkUser(SysUser sysUser,HttpServletRequest request) {
-		
+
 		SysUser checkUser = sysUserService.checkUser(sysUser);
+
 		if(BeanUtils.isNotEmpty(checkUser)) {
-			
+
 			HttpSession session=request.getSession();//获取session并将sysUser存入session对象
 			session.setAttribute("sysUser", checkUser);
 
