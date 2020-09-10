@@ -26,13 +26,12 @@ public class WeatherServiceImpl implements WeatherService {
 
 	@Override
 	public ReturnResult getWeather(String citykey) {
-		ReturnResult returnResult = null;
-		
+
 		StringBuilder sb=new StringBuilder();
 		Map<String, Object> weatherInfo = new HashMap<String, Object>();
         try {
-        	
-            String weatherRrl = "http://wthrcdn.etouch.cn/weather_mini?citykey="+citykey; //北京 101010100
+            //北京 101010100
+            String weatherRrl = "http://wthrcdn.etouch.cn/weather_mini?citykey="+citykey;
             //http://wthrcdn.etouch.cn/weather_mini?city=北京
             //String weatherRrl = "https://free-api.heweather.net/s6/weather/now?location="+cityName+"&key=db86a5196f304e52a4369818c5182e60";
 
@@ -51,10 +50,10 @@ public class WeatherServiceImpl implements WeatherService {
             reader.close();
             weatherInfo = transToWeather(sb.toString());
             
-            return returnResult.success(weatherInfo);
+            return ReturnResult.success(weatherInfo);
         } catch (IOException e) {
             e.printStackTrace();
-            return returnResult.fail();
+            return ReturnResult.fail();
         }
 		
 	}
@@ -70,7 +69,7 @@ public class WeatherServiceImpl implements WeatherService {
     	LinkedList<WeatherInfo> linkedList = new LinkedList<WeatherInfo>();
     	
         JSONObject dataOfJson = JSONObject.parseObject(weatherInfoByJson);
-        if(dataOfJson.getIntValue("status")!=1000) {
+        if(dataOfJson.getIntValue("status") != 1000) {
             return null;
         }
 

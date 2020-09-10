@@ -16,8 +16,6 @@
 
 <link th:href="@{/css/animate.css}" rel="stylesheet">
 
-<script th:src="@{/js/jquery.min.js}"></script>
-
 <link th:href="@{/css/plugins/fullcalendar/packages/core/main.css}" rel='stylesheet' />
 <link th:href="@{/css/plugins/fullcalendar/packages/daygrid/main.css}" rel='stylesheet' />
 <link th:href="@{/css/plugins/fullcalendar/packages/timegrid/main.css}" rel='stylesheet' />
@@ -70,6 +68,39 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title" id="myModalLabel">添加任务</h4>
+				</div>
+				<div class="modal-body">
+					<div>
+						任务名称 : <input id="title" type="text"/>
+					</div>
+					<div>
+						是否全天 :
+						是<input name="allDay" type="radio" value="0"/>
+						否<input name="allDay" type="radio" value="1"/>
+					</div>
+					<div>
+						开始时间 : <input id="startDate" type="date"/>
+					</div>
+					<div>
+						结束时间 : <input id="endDate" type="date"/>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" onclick="subEvent()">提交</button> </div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</div>
+
+
 </body>
 
 <!-- 全局js -->
@@ -89,17 +120,18 @@
 <script th:src="@{/js/plugins/fullcalendar/packages/interaction/main.js}"></script>
 <script th:src="@{/js/plugins/fullcalendar/packages/daygrid/main.js}"></script>
 <script th:src="@{/js/plugins/fullcalendar/packages/timegrid/main.js}"></script>
-<script th:src="@{/js/plugins/fullcalendar/packages/list/main.js}"></script>
+
 
 <script>
 
-	
+
 	$(document).ready(function() {
 		$('.i-checks').iCheck({
 			checkboxClass : 'icheckbox_square-green',
 			radioClass : 'iradio_square-green',
 		});
 	});
+
 
 	//移动Draggable到日历任务
 	function dropEvent(arg) {
@@ -108,20 +140,42 @@
 			arg.draggedEl.parentNode.removeChild(arg.draggedEl);
 		}
 	};
-	
-	
+
+
 	//点击时间创建日历任务
 	function selectEvent(arg) {
-		var title = prompt('任务名称:');
-		if (title) {
+		//TODO
+		/**
+		 * 模态框弹出任务填写框
+		 * 任务名称
+		 * 任务开始时间 8 - 18
+		 * @type {string}
+		 */
+		$('#myModal').modal('toggle');
+	};
+
+	//提交更改
+	function subEvent() {
+		//获取模态框数据
+		var title = $('#title').val();//任务名称
+		var startDate = $('#startDate').val();//开始时间
+		var endDate = $('#endDate').val();//结束时间
+		var allDay = $("input[name='allDay']:checked").val();//结束时间
+		//验证数据
+		var b = false;
+
+
+
+
+		if(b){
 			$.ajax({
 				url:"/calendar/add",
 				type:"POST",
 				data:{
 					title : title,
-					start : arg.start,
-					end : arg.end,
-					allDay : arg.allDay
+					start : startDate,
+					end : endDate,
+					allDay : allDay
 				},
 				success:function(data){
 					if(data.code == 200){
@@ -137,10 +191,11 @@
 					}
 				}
 			})
-			
 		}
+
 		calendar.unselect();
 	};
+
 
 	//拖动改变日历任务
 	function eventDrop(info) {
@@ -155,14 +210,14 @@
 				allDay : info.event.allDay
 			},
 			success:function(data){
-				
+
 			},
 			error:function(){
 				info.revert();
 			}
 		})
-    }
-	
+    };
+
 	//伸缩改变日历任务大小
 	function eventResize(info){
        	$.ajax({
@@ -176,14 +231,29 @@
 				allDay : info.event.allDay
 			},
 			success:function(data){
-				
+
 			},
 			error:function(){
 				info.revert();
 			}
 		})
-	}
-	
+	};
+
+	//任务单击事件
+	function eventClick(info){
+		$('#myModal').modal('show');
+	};
+
+	//鼠标移入移出事件
+	function eventRender(info){
+		$(info.el).popover({
+			content: info.event.title,
+			trigger: 'hover',
+			theme: 'primary lg',
+			placement: 'auto top'
+		})
+	};
+
 	var eventList = [ {
 		title : 'All Day Event',
 		start : '2020-01-11'
@@ -247,7 +317,7 @@
 			},
 			weekLabel : "周",
 			allDayText : "全天",
-			
+
 			eventLimit : true, // allow "more" link when too many events
 			eventLimitText : function(n) {
 				return "另外 " + n + " 个";
@@ -262,11 +332,14 @@
 			selectable : true,
 			selectMirror : true,
 			select : selectEvent,
-			
+
 			editable : true,
 			eventDrop: eventDrop,
 			eventResize: eventResize,
-			
+
+			eventClick: eventClick,
+			eventRender: eventRender,
+
 			events :"/calendar/all" //eventList //
 		});
 

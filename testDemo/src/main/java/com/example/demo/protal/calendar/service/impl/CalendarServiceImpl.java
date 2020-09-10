@@ -1,20 +1,19 @@
 package com.example.demo.protal.calendar.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.demo.common.model.ReturnResult;
 import com.example.demo.common.utils.UniqueIdUtils;
 import com.example.demo.protal.calendar.dao.CalendarEventMapper;
 import com.example.demo.protal.calendar.model.CalendarEvent;
 import com.example.demo.protal.calendar.service.CalendarService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class CalendarServiceImpl implements CalendarService {
 
-	@Autowired
+	@Resource
 	private CalendarEventMapper calendarEventMapper;
 	
 	@Override

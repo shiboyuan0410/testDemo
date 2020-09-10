@@ -31,9 +31,9 @@
 		margin-bottom: -10px;
 	}
 	
-	.fc-list-item-title.fc-widget-content >a {
+	.fc-list-item-title .fc-widget-content >a {
 		display: block;
-		width: 60px;
+		width: 60%;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -52,13 +52,13 @@
 	.qtip-event-detail .qtip-tip{
 	    top: 6px !important;
 	}
-	.event-detail-wrap{
+	.event-detail-wrap {
 	    display: none;
 	    font-size: 14px;
 	    line-height: 26px;
 	    color: #666
 	}
-	.detail-info-list{
+	.detail-info-list {
 	    color: #999;
 	}
 	.event-detail-wrap .action-group{
@@ -133,12 +133,12 @@
 <script>
 	function eventRender(info){
         var eventTitle = info.event.title;
-        console.log(eventTitle);
 	    $(".js_event_detail_team").text(eventTitle);
-	    
+	    var tcc = $('#event-detail').html();
+
 	    $(info.el).qtip({
 	        content: {
-	            text:  $('#event-detail') //要提示的内容，就是上面创建的那个浮层
+	            text:  tcc //要提示的内容，就是上面创建的那个浮层
 	        },
 	        position: {
 	            my: 'left top', //箭头的位置
@@ -156,7 +156,7 @@
 	            classes: 'qtip-event-detail' //自定义的弹层样式
 	        }
 	    });
-	    
+
 	};
 
 	var calendar;
@@ -191,7 +191,7 @@
 			noEventsMessage : "没有事件显示",
 
 			events :"/calendar/all",
-			
+
 			eventRender : eventRender
 		});
 

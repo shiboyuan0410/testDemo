@@ -82,7 +82,12 @@ public class CalendarController {
 	@ResponseBody
 	public String getAllCalendarEvent(HttpServletRequest request){
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
-		
+
+		/**
+		 * TODO
+		 * 任务查询 应是本月份 当前人的 所有任务
+		 */
+
 		List<CalendarEvent> allCalendarEvent = calendarService.getAllCalendarEvent(sysUser.getId());
 		return JSON.toJSONStringWithDateFormat(allCalendarEvent,"yyyy-MM-dd HH:mm:ss",SerializerFeature.WriteDateUseDateFormat);
 	}
