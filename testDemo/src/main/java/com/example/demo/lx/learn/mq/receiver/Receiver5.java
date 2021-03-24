@@ -18,12 +18,14 @@ public class Receiver5 {
 
     @RabbitListener(queues = "testMq_mes_direct_1")
     public void receiver3(String msg){
-        System.out.println("Test3 receiver3:"+msg);
+
+        System.out.println("库存信息更新:"+msg);
     }
 
     @RabbitListener(queues = "testMq_mes_direct_2")
     public void receiver4(String msg){
-        System.out.println("Test3 receiver4:"+msg);
+
+        System.out.println("快递信息更新:"+msg);
     }
 
     @RabbitListener(queues = "testMq_mes_direct_3")
