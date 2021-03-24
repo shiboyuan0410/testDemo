@@ -2,19 +2,35 @@ server:
   port: 8888
  
 spring:
-    #datasource:
-      #url: jdbc:oracle:thin:@192.168.199.232:1521:orcl
-      #username: SBYCS
-      #password: SBYCS
-      #driver-class-name: oracle.jdbc.driver.OracleDriver
     datasource:
-      url: jdbc:mysql://121.36.208.161:3306/myBlog?useUnicode=true&characterEncoding=utf8
-      driverClassName: com.mysql.jdbc.Driver
-      username: root
-      password: jingyang
- 
-           
-#thymelea模板配置
+      url: jdbc:oracle:thin:@192.168.21.82:1521:orcl
+      username: SBYCS
+      password: SBYCS
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+    #datasource:
+      #url: jdbc:mysql://121.36.208.161:3306/myBlog?useUnicode=true&characterEncoding=utf8
+      #driverClassName: com.mysql.jdbc.Driver
+      #username: root
+      #password: jingyang
+    rabbitmq:
+      host: 127.0.0.1
+      port: 5672
+      username: guest
+      password: guest
+
+      # publisher-confirms
+      # 在springboot2.2.0.RELEASE版本之前是amqp正式支持的属性，用来配置消息发送到交换器之后是否触发回调方法，
+      # 在2.2.0及之后该属性过期使用publisher-confirm-type属性配置代替，用来配置更多的确认类型
+      # NONE值是禁用发布确认模式，是默认值
+      # CORRELATED值是发布消息成功到交换器后会触发回调方法
+      # SIMPLE值经测试有两种效果，
+      # 其一效果和CORRELATED值一样会触发回调方法，
+      # 其二在发布消息成功后使用rabbitTemplate调用waitForConfirms或waitForConfirmsOrDie方法等待broker节点返回发送结果，
+      # 根据返回结果来判定下一步的逻辑，要注意的点是waitForConfirmsOrDie方法如果返回false则会关闭channel，则接下来无法发送消息到broker;
+
+      publisher-confirm-type: CORRELATED
+      publisher-returns: true #支持消息发送失败返回队列
+  #thymelea模板配置
     thymeleaf: 
       prefix: classpath:/templates/
       suffix: .html

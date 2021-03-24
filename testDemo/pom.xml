@@ -180,6 +180,13 @@
             <optional>true</optional>
         </dependency>
 
+
+		<!--消息队列模块-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
