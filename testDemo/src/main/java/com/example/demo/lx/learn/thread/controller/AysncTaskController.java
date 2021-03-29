@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.File;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -45,6 +46,9 @@ public class AysncTaskController {
     @RequestMapping("/task2")
     @ResponseBody
     public String task2() {
+
+        AysncTaskService.setTicks_num(10);
+
         for (int i=0 ; i < 100 ; i++){
             aysncTaskService.sell_ticks();
         }
@@ -67,6 +71,9 @@ public class AysncTaskController {
         ticketOffice_1.start();
         ticketOffice_2.start();
         ticketOffice_3.start();
+
+
+        File f = new File("");
 
         return "ok!";
     }

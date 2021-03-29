@@ -44,6 +44,10 @@ public class AysncTaskService {
 
 
     static int ticks_num = 40;
+    public static void setTicks_num(int ticks_num) {
+        AysncTaskService.ticks_num = ticks_num;
+    }
+
     private Lock lock = new ReentrantLock();
     /**
      * 异步加锁实现 数据安全
@@ -59,7 +63,7 @@ public class AysncTaskService {
 
                 rabbitTemplate.convertAndSend("directExchange","direct_1",ticks_num);
 
-                Thread.sleep(500L);
+                Thread.sleep(0);
 
             }else{
                 log.info("已售完!");
