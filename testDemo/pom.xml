@@ -110,14 +110,6 @@
 			<artifactId>gson</artifactId>
 		</dependency>
 
-		<dependency>
-		    <groupId>net.sf.json-lib</groupId>
-		    <artifactId>json-lib</artifactId>
-		    <version>2.4</version>
-		    <!-- 此处要加上jdk版本号 -->
-		    <classifier>jdk15</classifier>									
-		</dependency>
-
 
 		<!--httpclient -->
 		<dependency>
@@ -187,6 +179,33 @@
 			<artifactId>spring-boot-starter-amqp</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.4</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-all</artifactId>
+			<version>5.6.2</version>
+		</dependency>
+
+
+		<!--websocket-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
