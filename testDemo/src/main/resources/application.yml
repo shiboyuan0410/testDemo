@@ -58,6 +58,15 @@ spring:
       default-encoding: utf-8
       from: xx@126.com
 
+#logback日志框架
+logging:
+  config: classpath:logback-config.xml
+  level:
+    mapper: INFO
+    org.springframework.security: INFO
+    org.springframework.web: INFO
+    com.example.demo: INFO
+
 # mybatis 配置
 mybatis:
     mapper-locations: classpath*:mybatis/mapper/*.xml
