@@ -124,9 +124,30 @@
         </rollingPolicy>
     </appender>
 
+
+    <!-- 添加主数据日志输出地点 -->
+    <appender name="zsjLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 正在记录的日志文档的路径及文档名 -->
+        <file>${log.path}/zsjLog.log</file>
+        <encoder charset="utf-8">
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n
+            </pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>TRACE</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
     <!-- SQL相关日志输出-->
     <logger name="org.apache.ibatis" level="ERROR" additivity="false"/>
     <logger name="org.mybatis.spring" level="ERROR" additivity="false"/>
+
+
+    <logger name="com.wintac.controller.api.plat" level="INFO" additivity="false">
+        <appender-ref ref="zsjLog" />
+    </logger>
 
     <!-- Logger 根目录 -->
     <root level="DEBUG">
