@@ -1,22 +1,22 @@
 server:
   port: 8888
- 
+
 spring:
-    datasource:
-      url: jdbc:oracle:thin:@192.168.21.82:1521:orcl
-      username: SBYCS
-      password: SBYCS
-      driver-class-name: oracle.jdbc.driver.OracleDriver
     #datasource:
-      #url: jdbc:mysql://121.36.208.161:3306/myBlog?useUnicode=true&characterEncoding=utf8
-      #driverClassName: com.mysql.jdbc.Driver
-      #username: root
-      #password: jingyang
+    #  url: jdbc:oracle:thin:@192.168.21.82:1521:orcl
+    #  username: SBYCS
+    #  password: SBYCS
+    #  driver-class-name: oracle.jdbc.driver.OracleDriver
+    datasource:
+      url: jdbc:mysql://172.16.1.99:3306/myblog?useUnicode=true&characterEncoding=utf8
+      driverClassName: com.mysql.jdbc.Driver
+      username: root
+      password: Root123!
     rabbitmq:
-      host: 127.0.0.1
+      host: 172.16.1.99
       port: 5672
-      username: guest
-      password: guest
+      username: test
+      password: test
 
       # publisher-confirms
       # 在springboot2.2.0.RELEASE版本之前是amqp正式支持的属性，用来配置消息发送到交换器之后是否触发回调方法，
